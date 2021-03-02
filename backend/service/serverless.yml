@@ -1,0 +1,19 @@
+service: admissions-service
+
+
+provider:
+  name: aws
+  runtime: java11
+  profile: gradadmissions
+
+package:
+  artifact: build/distributions/service-0.0.1-SNAPSHOT.zip
+
+functions:
+  graphql:
+    handler: com.gradadmissionshub.service.Handler
+    events:
+      - http:
+          path: graphql
+          method: post
+          cors: true

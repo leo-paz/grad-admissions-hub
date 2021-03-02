@@ -23,11 +23,6 @@ public class GraphQLProvider {
 
     private GraphQL graphQL;
 
-    @Bean
-    public GraphQL graphQL() {
-        return graphQL;
-    }
-
     @PostConstruct
     public void init() throws IOException {
         URL url = Resources.getResource("schema.graphqls");
@@ -37,7 +32,7 @@ public class GraphQLProvider {
     }
 
     @Autowired
-    GraphQLDataFetchers graphQLDataFetchers;
+    GraphQLDataFetchers graphQLDataFetchers = new GraphQLDataFetchers();
 
     private GraphQLSchema buildSchema(String sdl) {
         TypeDefinitionRegistry typeRegistry = new SchemaParser().parse(sdl);
@@ -53,5 +48,10 @@ public class GraphQLProvider {
                 .type(newTypeWiring("Book")
                         .dataFetcher("author", graphQLDataFetchers.getAuthorDataFetcher()))
                 .build();
+    }
+
+    @Bean
+    public GraphQL graphQL() {
+        return graphQL;
     }
 }

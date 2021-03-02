@@ -2,11 +2,12 @@ plugins {
 	id 'org.springframework.boot' version '2.4.3'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
+	id 'com.apollographql.apollo' version '2.5.4'
 }
 
 group = 'com.gradadmissionshub'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '15'
+sourceCompatibility = '11'
 
 repositories {
 	mavenCentral()
@@ -18,8 +19,23 @@ dependencies {
 	implementation 'com.graphql-java:graphql-java:11.0' // NEW
 	implementation 'com.graphql-java:graphql-java-spring-boot-starter-webmvc:1.0' // NEW
 	implementation 'com.google.guava:guava:26.0-jre' // NEW
+	implementation 'com.apollographql.apollo:apollo-runtime:2.5.4'
+	implementation 'com.amazonaws:aws-lambda-java-core:1.1.0'
+	implementation 'com.amazonaws:aws-lambda-java-log4j:1.0.0'
+	implementation 'com.amazonaws:aws-lambda-java-events:3.1.0'
 }
 
 test {
 	useJUnitPlatform()
 }
+
+// http://docs.aws.amazon.com/lambda/latest/dg/create-deployment-pkg-zip-java.html
+task buildZip(type: Zip) {
+	from compileJava
+	from processResources
+	into('lib') {
+		from configurations.runtimeClasspath
+	}
+}
+
+build.dependsOn buildZip
