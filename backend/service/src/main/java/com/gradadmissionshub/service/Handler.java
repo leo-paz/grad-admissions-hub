@@ -1,27 +1,23 @@
 package com.gradadmissionshub.service;
 
 import com.amazonaws.services.lambda.runtime.RequestHandler;
-import com.apollographql.apollo.api.Input;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import graphql.ExecutionInput;
 import graphql.ExecutionResult;
-import graphql.GraphQL;
 import com.amazonaws.services.lambda.runtime.Context;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.annotation.Resource;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class Handler implements RequestHandler<Map<String, Object>, ApiGatewayResponse> {
+public class Handler implements RequestHandler<Object, Object> {
 
     GraphQLProvider graphQLProvider;
 
     @Override
-    public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
+    public Object handleRequest(Object input, Context context) {
+        context.getLogger().log("input: " + input);
         try {
             graphQLProvider = new GraphQLProvider();
             graphQLProvider.init();
@@ -29,35 +25,39 @@ public class Handler implements RequestHandler<Map<String, Object>, ApiGatewayRe
             e.printStackTrace();
         }
 
+        // TODO : If "query" is null, handle POST REQUEST
+
+        // TODO : If "query" is present, handle GET REQUEST
+
+        System.out.println(input);
+
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
+        headers.put("Access-Control-Allow-Headers", "Content-Type");
+        headers.put("Access-Control-Allow-Origin", "*");
+        headers.put("Access-Control-Allow-Methods", "OPTIONS,POST,GET");
 
-        var json = input.get("body").toString();
+        HashMap<String, Object> mapInput = (HashMap<String, Object>) input;
 
-        var relayMap = parseJson(json);
+        String query = mapInput.get("query").toString();
+        LinkedHashMap<Object, Object> variables = (LinkedHashMap<Object, Object>) mapInput.get("variables");
 
-        System.out.println(relayMap);
-        String query = (String) relayMap.get("query");
-        var variablesString = relayMap.get("variables");
-        Map<String, Object> variables = null;
-        if (variablesString == null) {
-            variables = new LinkedHashMap<>();
-        } else {
-            variables = parseJson((String) relayMap.get("variables"));
-        }
-
-        ExecutionResult result = graphQLProvider.graphQL().execute(query, (Object) null, variables);
+        ExecutionResult result = graphQLProvider.graphQL().execute(query, (String) null, variables);
         Map<String, Object> responseBody = new LinkedHashMap<>();
         if (result.getErrors().size() > 0) {
             responseBody.put("errors", result.getErrors());
         }
-
         responseBody.put("data", result.getData());
-        return ApiGatewayResponse.builder()
-                .setStatusCode(200)
-                .setObjectBody(responseBody)
-                .setHeaders(headers)
-                .build();
+
+//        var objectMapper = new ObjectMapper();
+//        String response = "";
+//        try {s
+//            response = objectMapper.writeValueAsString(responseBody);
+//        } catch (JsonProcessingException e) {
+//            e.printStackTrace();
+//        }
+
+        return responseBody;
     }
 
     private Map<String, Object> parseJson(String json) {
