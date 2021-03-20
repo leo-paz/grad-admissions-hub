@@ -5,6 +5,7 @@ provider:
   name: aws
   runtime: java11
   profile: gradadmissions
+  stage: dev
 
 package:
   artifact: build/distributions/service-0.0.1-SNAPSHOT.zip

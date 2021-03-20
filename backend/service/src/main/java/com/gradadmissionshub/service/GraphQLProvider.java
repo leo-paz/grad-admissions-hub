@@ -1,7 +1,11 @@
 package com.gradadmissionshub.service;
 
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
+import com.gradadmissionshub.database.repository.ApplicantRepository;
+import com.gradadmissionshub.database.repository.ProfessorRepository;
 import graphql.GraphQL;
 import graphql.schema.GraphQLSchema;
 import graphql.schema.idl.RuntimeWiring;
@@ -22,17 +26,24 @@ import static graphql.schema.idl.TypeRuntimeWiring.newTypeWiring;
 public class GraphQLProvider {
 
     private GraphQL graphQL;
+    private DynamoDBMapper mapper;
+    private ProfessorRepository profRepo;
+    private ApplicantRepository applicantRepo;
+    GraphQLDataFetchers graphQLDataFetchers;
 
     @PostConstruct
     public void init() throws IOException {
+        mapper = new DynamoDBMapper(AmazonDynamoDBClientBuilder.defaultClient());
+        profRepo = new ProfessorRepository();
+        profRepo.setMapper(mapper);
+        applicantRepo = new ApplicantRepository();
+        applicantRepo.setMapper(mapper);
+        graphQLDataFetchers = new GraphQLDataFetchers(profRepo, applicantRepo);
         URL url = Resources.getResource("schema.graphqls");
         String sdl = Resources.toString(url, Charsets.UTF_8);
         GraphQLSchema graphQLSchema = buildSchema(sdl);
         this.graphQL = GraphQL.newGraphQL(graphQLSchema).build();
     }
-
-    @Autowired
-    GraphQLDataFetchers graphQLDataFetchers = new GraphQLDataFetchers();
 
     private GraphQLSchema buildSchema(String sdl) {
         TypeDefinitionRegistry typeRegistry = new SchemaParser().parse(sdl);
@@ -44,9 +55,10 @@ public class GraphQLProvider {
     private RuntimeWiring buildWiring() {
         return RuntimeWiring.newRuntimeWiring()
                 .type(newTypeWiring("Query")
-                        .dataFetcher("bookById", graphQLDataFetchers.getBookByIdDataFetcher()))
-                .type(newTypeWiring("Book")
-                        .dataFetcher("author", graphQLDataFetchers.getAuthorDataFetcher()))
+                        .dataFetcher("professorById", graphQLDataFetchers.getProfessorByIdDataFetcher())
+                        .dataFetcher("applicantById", graphQLDataFetchers.getApplicantByIdDataFetcher()))
+                //.type(newTypeWiring("Professor")
+                        //.dataFetcher("author", graphQLDataFetchers.getProfessorDataFetcher()))
                 .build();
     }
 
