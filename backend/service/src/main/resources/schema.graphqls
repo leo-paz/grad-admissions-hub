@@ -1,16 +1,42 @@
 type Query {
   professorById(id: ID): Professor
   applicantById(id: ID): Applicant
+  applicationById(id: ID): Application
+  reviewById(id: ID): Review
 }
 
 type Professor {
   id: ID
   name: String
-  areaOfResearch: String
+  areasOfResearch: [String]
+  applications: [Application]
 }
 
 type Applicant {
   id: ID
   name: String
-  areaOfResearch: String
+  graduationDate: String
+  majors: [String]
+  applications: [Application]
+}
+
+type Application {
+  id: ID
+  applicant: Applicant
+  professor: Professor
+  dateSubmitted: String
+  areasOfResearch: [String]
+  resumeDocumentId: String
+  diplomaDocumentId: String
+  auditDocumentId: String
+  reviews: [Review]
+}
+
+type Review {
+  id: ID
+  ranking: Int
+  title: String
+  body: String
+  professor: Professor
+  dateSubmitted: String
 }

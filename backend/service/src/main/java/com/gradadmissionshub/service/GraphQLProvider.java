@@ -5,7 +5,9 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
 import com.gradadmissionshub.database.repository.ApplicantRepository;
+import com.gradadmissionshub.database.repository.ApplicationRepository;
 import com.gradadmissionshub.database.repository.ProfessorRepository;
+import com.gradadmissionshub.database.repository.ReviewRepository;
 import graphql.GraphQL;
 import graphql.schema.GraphQLSchema;
 import graphql.schema.idl.RuntimeWiring;
@@ -27,8 +29,10 @@ public class GraphQLProvider {
 
     private GraphQL graphQL;
     private DynamoDBMapper mapper;
-    private ProfessorRepository profRepo;
-    private ApplicantRepository applicantRepo;
+    ProfessorRepository profRepo;
+    ApplicantRepository applicantRepo;
+    ApplicationRepository applicationRepo;
+    ReviewRepository reviewRepo;
     GraphQLDataFetchers graphQLDataFetchers;
 
     @PostConstruct
@@ -38,7 +42,11 @@ public class GraphQLProvider {
         profRepo.setMapper(mapper);
         applicantRepo = new ApplicantRepository();
         applicantRepo.setMapper(mapper);
-        graphQLDataFetchers = new GraphQLDataFetchers(profRepo, applicantRepo);
+        applicationRepo = new ApplicationRepository();
+        applicationRepo.setMapper(mapper);
+        reviewRepo = new ReviewRepository();
+        reviewRepo.setMapper(mapper);
+        graphQLDataFetchers = new GraphQLDataFetchers(profRepo, applicantRepo, applicationRepo, reviewRepo);
         URL url = Resources.getResource("schema.graphqls");
         String sdl = Resources.toString(url, Charsets.UTF_8);
         GraphQLSchema graphQLSchema = buildSchema(sdl);
@@ -56,9 +64,18 @@ public class GraphQLProvider {
         return RuntimeWiring.newRuntimeWiring()
                 .type(newTypeWiring("Query")
                         .dataFetcher("professorById", graphQLDataFetchers.getProfessorByIdDataFetcher())
-                        .dataFetcher("applicantById", graphQLDataFetchers.getApplicantByIdDataFetcher()))
-                //.type(newTypeWiring("Professor")
-                        //.dataFetcher("author", graphQLDataFetchers.getProfessorDataFetcher()))
+                        .dataFetcher("applicantById", graphQLDataFetchers.getApplicantByIdDataFetcher())
+                        .dataFetcher("applicationById", graphQLDataFetchers.getApplicationByIdDataFetcher())
+                        .dataFetcher("reviewById", graphQLDataFetchers.getReviewByIdDataFetcher()))
+                .type(newTypeWiring("Professor")
+                        .dataFetcher("applications", graphQLDataFetchers.getApplicationsInProfessorDataFetcher()))
+                .type(newTypeWiring("Applicant")
+                        .dataFetcher("applications", graphQLDataFetchers.getApplicationsInApplicantDataFetcher()))
+                .type(newTypeWiring("Application")
+                        .dataFetcher("professor", graphQLDataFetchers.getProfessorInApplicationDataFetcher())
+                        .dataFetcher("applicant", graphQLDataFetchers.getApplicantInApplicationDataFetcher()))
+                .type(newTypeWiring("Review")
+                        .dataFetcher("professor", graphQLDataFetchers.getProfessorInReviewDataFetcher()))
                 .build();
     }
 

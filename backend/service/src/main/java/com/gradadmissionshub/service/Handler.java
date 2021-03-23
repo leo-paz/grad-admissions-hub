@@ -9,14 +9,15 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.gradadmissionshub.database.entity.Applicant;
 import com.gradadmissionshub.database.entity.Professor;
 import com.gradadmissionshub.database.repository.ApplicantRepository;
+import com.gradadmissionshub.database.repository.ApplicationRepository;
 import com.gradadmissionshub.database.repository.ProfessorRepository;
+import com.gradadmissionshub.database.repository.ReviewRepository;
+import com.gradadmissionshub.service.helpers.ParsingCreateRequests;
 import graphql.ExecutionResult;
 import com.amazonaws.services.lambda.runtime.Context;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -28,6 +29,8 @@ public class Handler implements RequestHandler<Object, Object> {
     LambdaLogger logger;
     ProfessorRepository profRepo;
     ApplicantRepository applicantRepo;
+    ApplicationRepository applicationRepo;
+    ReviewRepository reviewRepo;
 
     @Override
     public Object handleRequest(Object input, Context context) {
@@ -41,6 +44,10 @@ public class Handler implements RequestHandler<Object, Object> {
             profRepo.setMapper(mapper);
             applicantRepo = new ApplicantRepository();
             applicantRepo.setMapper(mapper);
+            applicationRepo = new ApplicationRepository();
+            applicationRepo.setMapper(mapper);
+            reviewRepo = new ReviewRepository();
+            reviewRepo.setMapper(mapper);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (Exception e) {
@@ -62,48 +69,24 @@ public class Handler implements RequestHandler<Object, Object> {
             responseBody.put("data", result.getData());
             return responseBody;
         } else if (mapInput.get("Professor") != null) {
-            var prof = buildProfessorFromFields((LinkedHashMap<String, Object>) mapInput.get("Professor"));
+            var prof = ParsingCreateRequests.buildProfessorFromFields((LinkedHashMap<String, Object>) mapInput.get("Professor"));
             profRepo.save(prof);
             return prof;
         } else if (mapInput.get("Applicant") != null) {
-            var applicant = buildApplicantFromFields((LinkedHashMap<String, Object>) mapInput.get("Applicant"));
+            var applicant = ParsingCreateRequests.buildApplicantFromFields((LinkedHashMap<String, Object>) mapInput.get("Applicant"));
             applicantRepo.save(applicant);
             return applicant;
+        } else if (mapInput.get("Application") != null) {
+            var application = ParsingCreateRequests.buildApplicationFromFields((LinkedHashMap<String, Object>) mapInput.get("Application"));
+            applicationRepo.save(application);
+            return application;
+        } else if (mapInput.get("Review") != null) {
+            var review = ParsingCreateRequests.buildReviewFromFields((LinkedHashMap<String, Object>) mapInput.get("Review"));
+            reviewRepo.save(review);
+            return review;
         } else {
-            throw new IllegalArgumentException("IllegalArgumentException: Must be a query, Applicant Body, or Professor Body");
+            throw new IllegalArgumentException("IllegalArgumentException: Must be a query, Applicant Body, Professor Body, Application Body, or Review Body");
         }
-    }
-
-    private Professor buildProfessorFromFields(LinkedHashMap<String, Object> professorFields) {
-        if (!validProfessorFields(professorFields)) {
-            throw new IllegalArgumentException("IllegalArgumentException: Must have name and areaOfResearch");
-        }
-        return new Professor((String) professorFields.get("name"), (String) professorFields.get("areaOfResearch"));
-    }
-
-    private boolean validProfessorFields(LinkedHashMap<String, Object> professorFields) {
-        if (professorFields.get("name") == null) {
-            return false;
-        } else if (professorFields.get("areaOfResearch") == null) {
-            return false;
-        }
-        return true;
-    }
-
-    private Applicant buildApplicantFromFields(LinkedHashMap<String, Object> applicantFields) {
-        if (!validApplicantFields(applicantFields)) {
-            throw new IllegalArgumentException("IllegalArgumentException: Must have name and areaOfResearch");
-        }
-        return new Applicant((String) applicantFields.get("name"), (String) applicantFields.get("areaOfResearch"));
-    }
-
-    private boolean validApplicantFields(LinkedHashMap<String, Object> applicantFields) {
-        if (applicantFields.get("name") == null) {
-            return false;
-        } else if (applicantFields.get("areaOfResearch") == null) {
-            return false;
-        }
-        return true;
     }
 
     private Map<String, Object> parseJson(String json) {
