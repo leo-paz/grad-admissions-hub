@@ -38,6 +38,12 @@ const Navbar = () => {
                         <span className="link-text">About</span>
                     </Link>
                 </li>
+                <li className="nav-item">
+                    <Link className="nav-link" to="/proflogin">
+                        <AlienIcon/>
+                        <span className="link-text">Prof Login</span>
+                    </Link>
+                </li>
                 <li class="nav-item">
                     <Link className="nav-link">
                         <PlanetIcon />
