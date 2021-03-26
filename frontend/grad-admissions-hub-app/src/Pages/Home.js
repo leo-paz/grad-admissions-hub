@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
-import GetBook1 from "./../Components/GetBook1";
+import GetApplicant1 from "./../Components/GetApplicant1";
 
 const Home = () => {
   return (
     <div className="page">
       <h1>Home</h1>
-      <GetBook1></GetBook1>
+      <GetApplicant1></GetApplicant1>
     </div>
   );
 };
