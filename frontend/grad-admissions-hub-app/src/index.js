@@ -32,7 +32,7 @@ const errorLink = onError(({ graphqlErrors }) => {
 const dbLink = from([
   errorLink,
   new HttpLink({
-    uri: "https://j2ofh2owcb.execute-api.us-east-1.amazonaws.com/dev/graphql",
+    uri: "https://j2ofh2owcb.execute-api.us-east-1.amazonaws.com/main/graphql",
   }),
 ]);
 
