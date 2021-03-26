@@ -45,15 +45,15 @@ const Navbar = () => {
                     </Link>
                 </li>
                 <li class="nav-item">
-                    <Link className="nav-link">
+                    <Link className="nav-link" to="/submission">
                         <PlanetIcon />
-                        <span className="link-text">Space</span>
+                        <span className="link-text">Submission</span>
                     </Link>
                 </li>
                 <li class="nav-item">
-                    <Link className="nav-link">
+                    <Link className="nav-link" to="/review">
                         <ShuttleIcon />
-                        <span className="link-text">Shuttle</span>
+                        <span className="link-text">Review</span>
                     </Link>
                 </li>
                 <li class="nav-item">

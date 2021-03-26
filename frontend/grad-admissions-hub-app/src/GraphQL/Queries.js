@@ -26,3 +26,23 @@ export const LOAD_PROFS = gql`
         }
     }
 `;
+export const LOAD_APPLICATION = gql`
+  query {
+      applicationById(id: "b0071922-6184-480a-a5db-a0897ed85ae3") {
+          applicant {
+              id
+              name
+          }
+          professor {
+              id
+              name
+          }
+          dateSubmitted
+          areasOfResearch
+          resumeDocumentId
+          diplomaDocumentId
+          auditDocumentId
+      }
+  }
+`;
+

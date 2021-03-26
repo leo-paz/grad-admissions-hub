@@ -4,7 +4,10 @@ import Home from "./Pages/Home";
 import ApplicantSignup from "./Pages/ApplicantSignup";
 import About from "./Pages/About";
 import ProfLogin from "./Pages/ProfLogin";
+import Submission from "./Pages/Submission";
+import Review from "./Pages/Review";
 import Navbar from "./Components/Navbar/Navbar";
+
 
 function App() {
   return (
@@ -16,6 +19,8 @@ function App() {
             <Route path="/proflogin" component={ProfLogin} />
           <Route path="/" exact component={Home} />
           <Route path="/applicantSignup" component={ApplicantSignup} />
+          <Route path="/submission" component={Submission} />
+          <Route path="/review" component={Review} />
         </Switch>
       </div>
     </Router>
