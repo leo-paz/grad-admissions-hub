@@ -13,3 +13,16 @@ export const LOAD_APPLICANT1 = gql`
     }
 }
 `;
+
+export const LOAD_PROFS = gql`
+    {
+        professorById(id: "9cc14e72-eca7-4528-b2b8-1ab6f16ce02a") {
+            id
+            name
+            areasOfResearch
+            applications {
+                diplomaDocumentId
+            }
+        }
+    }
+`;
