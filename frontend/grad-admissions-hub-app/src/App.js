@@ -8,6 +8,10 @@ import Submission from "./Pages/Submission";
 import Review from "./Pages/Review";
 import Navbar from "./Components/Navbar/Navbar";
 
+import Amplify from 'aws-amplify';
+import awsconfig from './aws-exports';
+
+Amplify.configure(awsconfig);
 
 function App() {
   return (
