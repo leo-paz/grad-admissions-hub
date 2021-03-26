@@ -2,13 +2,11 @@ import React, { useState, useEffect, useRef } from "react";
 import "./ProfLogin.css";
 import { useHistory } from 'react-router';
 
-
+import { Auth } from 'aws-amplify';
 
 const mystyle = {
     marginLeft: "100px"
 };
-
-
 
 const ProfLogin = () => {
     const history = useHistory();
@@ -20,7 +18,6 @@ const ProfLogin = () => {
         areasOfResearch: []
     });
 
-
     const requestProf = `{
         "Professor": {
             "name": "${state.name}",
@@ -28,13 +25,47 @@ const ProfLogin = () => {
         }
     }`
 
-    const handleButton = (event) => {
-        console.log("signup is clicked!");
-        fetch("https://j2ofh2owcb.execute-api.us-east-1.amazonaws.com/main/graphql",{
-            method: 'POST',
-            body: requestProf
+    const handleButton = async (event) => {
+        //
+        if(state.login){
+            console.log("login is clicked!");
 
-        })
+            try {
+                const user = await Auth.signIn(state.email, state.password)
+                .then((response) => {
+                  console.log("sign in successful", response);
+                  
+                });
+            } catch (error) {
+                console.log('error signing in', error);
+            }
+
+        }else {
+            console.log("signup is clicked!");
+            console.log(requestProf);
+
+            try {
+                const { user } = await Auth.signUp({
+                    username:state.email,
+                    password:state.password,
+                    attributes: {
+                        name:state.name,
+                                        // other custom attributes 
+                    }
+                });
+                console.log(user);
+                console.log("Successfully signed up!");
+                
+                fetch("https://j2ofh2owcb.execute-api.us-east-1.amazonaws.com/main/graphql",{
+                  method: 'POST',
+                  body: requestProf
+      
+                })
+            } catch (error) {
+                console.log('error signing up:', error);
+            }
+        }
+
     }
 
     const onNameHandle = (event) => {
@@ -146,9 +177,7 @@ const ProfLogin = () => {
                         })
                     }
                 >
-                    {state.login
-                        ? 'Need an Account? Sign Up'
-                        : 'Have an Account? Login'}
+                    {state.login ? 'Need an Account? Sign Up' : 'Have an Account? Login'}
                 </button>
             </div>
         </div>

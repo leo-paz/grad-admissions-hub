@@ -103,12 +103,6 @@
               "Outputs.AppClientID"
             ]
           },
-          "authgradadmissionshub12b661cc12b661ccIdentityPoolId": {
-            "Fn::GetAtt": [
-              "authgradadmissionshub12b661cc12b661cc",
-              "Outputs.IdentityPoolId"
-            ]
-          },
           "env": "staging"
         }
       }
@@ -118,8 +112,6 @@
       "Properties": {
         "TemplateURL": "https://s3.amazonaws.com/amplify-amplifyda56e372c4cc4-staging-40923-deployment/amplify-cfn-templates/auth/gradadmissionshub12b661cc12b661cc-cloudformation-template.yml",
         "Parameters": {
-          "identityPoolName": "gradadmissionshub12b661cc_identitypool_12b661cc",
-          "allowUnauthenticatedIdentities": false,
           "resourceNameTruncated": "gradad12b661cc",
           "userPoolName": "gradadmissionshub12b661cc_userpool_12b661cc",
           "autoVerifiedAttributes": "email",
@@ -129,7 +121,7 @@
           "smsVerificationMessage": "Your verification code is {####}",
           "emailVerificationSubject": "Your verification code",
           "emailVerificationMessage": "Your verification code is {####}",
-          "defaultPasswordPolicy": true,
+          "defaultPasswordPolicy": false,
           "passwordPolicyMinLength": "6",
           "passwordPolicyCharacters": "",
           "requiredAttributes": "email,name",
@@ -141,7 +133,7 @@
           "userpoolClientSetAttributes": false,
           "sharedId": "12b661cc",
           "resourceName": "gradadmissionshub12b661cc12b661cc",
-          "authSelections": "identityPoolAndUserPool",
+          "authSelections": "userPoolOnly",
           "authRoleArn": {
             "Fn::GetAtt": [
               "AuthRole",
@@ -155,16 +147,11 @@
             ]
           },
           "useDefault": "manual",
-          "thirdPartyAuth": false,
           "usernameAttributes": "email",
-          "userPoolGroups": true,
+          "userPoolGroups": false,
           "adminQueries": false,
           "triggers": "{}",
           "hostedUI": true,
-          "hostedUIDomainName": "gradadmissionshub12b661cc-12b661cc",
-          "authProvidersUserPool": "",
-          "hostedUIProviderMeta": "[]",
-          "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"https://main.d3qg8qn14f45no.amplifyapp.com/\"],\"LogoutURLs\":[\"https://main.d3qg8qn14f45no.amplifyapp.com/\"]}",
           "userPoolGroupList": "Applicant",
           "serviceName": "Cognito",
           "usernameCaseSensitive": false,
@@ -173,179 +160,14 @@
           },
           "permissions": "",
           "dependsOn": "",
+          "hostedUIDomainName": "gradadmissionshubaa0d04c1-aa0d04c1",
+          "authProvidersUserPool": "",
+          "hostedUIProviderMeta": "[]",
+          "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"https://main.d3qg8qn14f45no.amplifyapp.com/\"],\"LogoutURLs\":[\"https://main.d3qg8qn14f45no.amplifyapp.com/\"]}",
+          "authProviders": "",
           "hostedUIProviderCreds": "[]",
           "env": "staging"
         }
-      }
-    },
-    "UpdateRolesWithIDPFunction": {
-      "DependsOn": [
-        "AuthRole",
-        "UnauthRole",
-        "authgradadmissionshub12b661cc12b661cc"
-      ],
-      "Type": "AWS::Lambda::Function",
-      "Properties": {
-        "Code": {
-          "ZipFile": {
-            "Fn::Join": [
-              "\n",
-              [
-                "const response = require('cfn-response');",
-                "const aws = require('aws-sdk');",
-                "let responseData = {};",
-                "exports.handler = function(event, context) {",
-                "  try {",
-                "    let authRoleName = event.ResourceProperties.authRoleName;",
-                "    let unauthRoleName = event.ResourceProperties.unauthRoleName;",
-                "    let idpId = event.ResourceProperties.idpId;",
-                "    let promises = [];",
-                "    let authParamsJson = { 'Version': '2012-10-17','Statement': [{'Effect': 'Allow','Principal': {'Federated': 'cognito-identity.amazonaws.com'},'Action': 'sts:AssumeRoleWithWebIdentity','Condition': {'StringEquals': {'cognito-identity.amazonaws.com:aud': idpId},'ForAnyValue:StringLike': {'cognito-identity.amazonaws.com:amr': 'authenticated'}}}]};",
-                "    let unauthParamsJson = { 'Version': '2012-10-17','Statement': [{'Effect': 'Allow','Principal': {'Federated': 'cognito-identity.amazonaws.com'},'Action': 'sts:AssumeRoleWithWebIdentity','Condition': {'StringEquals': {'cognito-identity.amazonaws.com:aud': idpId},'ForAnyValue:StringLike': {'cognito-identity.amazonaws.com:amr': 'unauthenticated'}}}]};",
-                "    if (event.RequestType == 'Delete') {",
-                "        delete authParamsJson.Statement[0].Condition;",
-                "        delete unauthParamsJson.Statement[0].Condition;",
-                "        let authParams = { PolicyDocument: JSON.stringify(authParamsJson),RoleName: authRoleName};",
-                "        let unauthParams = {PolicyDocument: JSON.stringify(unauthParamsJson),RoleName: unauthRoleName};",
-                "        const iam = new aws.IAM({ apiVersion: '2010-05-08', region: event.ResourceProperties.region});",
-                "        promises.push(iam.updateAssumeRolePolicy(authParams).promise());",
-                "        promises.push(iam.updateAssumeRolePolicy(unauthParams).promise());",
-                "        Promise.all(promises)",
-                "         .then((res) => {",
-                "            console.log(\"delete response data\" + JSON.stringify(res));",
-                "            response.send(event, context, response.SUCCESS, {});",
-                "         });",
-                "    }",
-                "    if (event.RequestType == 'Update' || event.RequestType == 'Create') {",
-                "       const iam = new aws.IAM({ apiVersion: '2010-05-08', region: event.ResourceProperties.region});",
-                "        let authParams = { PolicyDocument: JSON.stringify(authParamsJson),RoleName: authRoleName};",
-                "        let unauthParams = {PolicyDocument: JSON.stringify(unauthParamsJson),RoleName: unauthRoleName};",
-                "        promises.push(iam.updateAssumeRolePolicy(authParams).promise());",
-                "        promises.push(iam.updateAssumeRolePolicy(unauthParams).promise());",
-                "        Promise.all(promises)",
-                "         .then((res) => {",
-                "            console.log(\"createORupdate\" + res);",
-                "            console.log(\"response data\" + JSON.stringify(res));",
-                "            response.send(event, context, response.SUCCESS, {});",
-                "         });",
-                "    }",
-                "  } catch(err) {",
-                "       console.log(err.stack);",
-                "       responseData = {Error: err};",
-                "       response.send(event, context, response.FAILED, responseData);",
-                "       throw err;",
-                "  }",
-                "};"
-              ]
-            ]
-          }
-        },
-        "Handler": "index.handler",
-        "Runtime": "nodejs12.x",
-        "Timeout": "300",
-        "Role": {
-          "Fn::GetAtt": [
-            "UpdateRolesWithIDPFunctionRole",
-            "Arn"
-          ]
-        }
-      }
-    },
-    "UpdateRolesWithIDPFunctionOutputs": {
-      "Type": "Custom::LambdaCallout",
-      "Properties": {
-        "ServiceToken": {
-          "Fn::GetAtt": [
-            "UpdateRolesWithIDPFunction",
-            "Arn"
-          ]
-        },
-        "region": {
-          "Ref": "AWS::Region"
-        },
-        "idpId": {
-          "Fn::GetAtt": [
-            "authgradadmissionshub12b661cc12b661cc",
-            "Outputs.IdentityPoolId"
-          ]
-        },
-        "authRoleName": {
-          "Ref": "AuthRoleName"
-        },
-        "unauthRoleName": {
-          "Ref": "UnauthRoleName"
-        }
-      }
-    },
-    "UpdateRolesWithIDPFunctionRole": {
-      "Type": "AWS::IAM::Role",
-      "Properties": {
-        "RoleName": {
-          "Fn::Join": [
-            "",
-            [
-              {
-                "Ref": "AuthRoleName"
-              },
-              "-idp"
-            ]
-          ]
-        },
-        "AssumeRolePolicyDocument": {
-          "Version": "2012-10-17",
-          "Statement": [
-            {
-              "Effect": "Allow",
-              "Principal": {
-                "Service": [
-                  "lambda.amazonaws.com"
-                ]
-              },
-              "Action": [
-                "sts:AssumeRole"
-              ]
-            }
-          ]
-        },
-        "Policies": [
-          {
-            "PolicyName": "UpdateRolesWithIDPFunctionPolicy",
-            "PolicyDocument": {
-              "Version": "2012-10-17",
-              "Statement": [
-                {
-                  "Effect": "Allow",
-                  "Action": [
-                    "logs:CreateLogGroup",
-                    "logs:CreateLogStream",
-                    "logs:PutLogEvents"
-                  ],
-                  "Resource": "arn:aws:logs:*:*:*"
-                },
-                {
-                  "Effect": "Allow",
-                  "Action": "iam:UpdateAssumeRolePolicy",
-                  "Resource": {
-                    "Fn::GetAtt": [
-                      "AuthRole",
-                      "Arn"
-                    ]
-                  }
-                },
-                {
-                  "Effect": "Allow",
-                  "Action": "iam:UpdateAssumeRolePolicy",
-                  "Resource": {
-                    "Fn::GetAtt": [
-                      "UnauthRole",
-                      "Arn"
-                    ]
-                  }
-                }
-              ]
-            }
-          }
-        ]
       }
     }
   },

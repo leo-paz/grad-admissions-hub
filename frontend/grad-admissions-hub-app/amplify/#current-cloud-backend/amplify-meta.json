@@ -23,8 +23,7 @@
           "attributes": [
             "UserPoolId",
             "AppClientIDWeb",
-            "AppClientID",
-            "IdentityPoolId"
+            "AppClientID"
           ]
         }
       ],
@@ -32,11 +31,11 @@
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-amplifyda56e372c4cc4-staging-40923-deployment/amplify-cfn-templates/auth/template.json",
         "logicalId": "authuserPoolGroups"
       },
-      "lastPushTimeStamp": "2021-03-26T04:49:48.203Z",
+      "lastPushTimeStamp": "2021-03-26T11:20:27.511Z",
       "output": {
         "ApplicantGroupRole": "arn:aws:iam::362368825911:role/us-east-1_fUiX0Rhoc-ApplicantGroupRole"
       },
-      "lastPushDirHash": "6tBibmP8SCfyp1puDmp6RFXQi3k="
+      "lastPushDirHash": "IJMZlSKKbaM8kD7ta2/aOTwuspg="
     },
     "gradadmissionshub12b661cc12b661cc": {
       "service": "Cognito",
@@ -47,18 +46,18 @@
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-amplifyda56e372c4cc4-staging-40923-deployment/amplify-cfn-templates/auth/gradadmissionshub12b661cc12b661cc-cloudformation-template.yml",
         "logicalId": "authgradadmissionshub12b661cc12b661cc"
       },
-      "lastPushTimeStamp": "2021-03-26T04:49:48.203Z",
+      "lastPushTimeStamp": "2021-03-26T11:20:27.511Z",
       "output": {
         "UserPoolId": "us-east-1_fUiX0Rhoc",
         "AppClientIDWeb": "2s2djdegfucokmnq8fajhuna6q",
         "AppClientID": "4ts25vn95g22rtkhaoc8uhhor4",
-        "HostedUIDomain": "gradadmissionshub12b661cc-12b661cc-staging",
+        "HostedUIDomain": "gradadmissionshubaa0d04c1-aa0d04c1-staging",
         "IdentityPoolId": "us-east-1:2464c18f-3d5d-40ed-9bdd-0bd7a442ad36",
         "IdentityPoolName": "gradadmissionshub12b661cc_identitypool_12b661cc__staging",
         "OAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"https://main.d3qg8qn14f45no.amplifyapp.com/\"],\"LogoutURLs\":[\"https://main.d3qg8qn14f45no.amplifyapp.com/\"]}",
         "UserPoolName": "gradadmissionshub12b661cc_userpool_12b661cc"
       },
-      "lastPushDirHash": "dqo29fevugHbLypWMNkCUhZ5X30="
+      "lastPushDirHash": "BisLmr8vS17EdIEYaLbINcCFowE="
     }
   }
 }
