@@ -1,137 +1,158 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./ProfLogin.css";
-import { useMutation, gql } from '@apollo/client';
-import { AUTH_TOKEN } from '../constants';
-import {useHistory} from "react-router";
+import { useHistory } from 'react-router';
 
 
-const SIGNUP_MUTATION = gql`
-  mutation SignupMutation(
-    $email: String!
-    $password: String!
-    $name: String!
-  ) {
-    signup(
-      email: $email
-      password: $password
-      name: $name
-    ) {
-      token
-    }
-  }
-`;
 
-const LOGIN_MUTATION = gql`
-  mutation LoginMutation(
-    $email: String!
-    $password: String!
-  ) {
-    login(email: $email, password: $password) {
-      token
-    }
-  }
-`;
+const mystyle = {
+    marginLeft: "100px"
+};
 
 
 
 const ProfLogin = () => {
     const history = useHistory();
-    const [formState, setFormState] = useState({
+    const [state, setState] = useState({
         login: true,
         email: '',
         password: '',
-        name: ''
+        name: '',
+        areasOfResearch: []
     });
 
-    const [login] = useMutation(LOGIN_MUTATION, {
-        variables: {
-            email: formState.email,
-            password: formState.password
-        },
-        onCompleted: ({ login }) => {
-            localStorage.setItem(AUTH_TOKEN, login.token);
-            history.push('/');
-        }
-    });
 
-    const [signup] = useMutation(SIGNUP_MUTATION, {
-        variables: {
-            name: formState.name,
-            email: formState.email,
-            password: formState.password
-        },
-        onCompleted: ({ signup }) => {
-            localStorage.setItem(AUTH_TOKEN, signup.token);
-            history.push('/');
+    const requestProf = `{
+        "Professor": {
+            "name": "${state.name}",
+            "areasOfResearch": [${state.areasOfResearch}]
         }
-    });
+    }`
+
+    const handleButton = (event) => {
+        console.log("signup is clicked!");
+        fetch("https://j2ofh2owcb.execute-api.us-east-1.amazonaws.com/main/graphql",{
+            method: 'POST',
+            body: requestProf
+
+        })
+    }
+
+    const onNameHandle = (event) => {
+        const newState = {...state, name: event.target.value};
+        setState(newState);
+    }
+
+    const onCheckBoxChange = (event) => {
+        console.log(event.target.name);
+        console.log(event.target.checked);
+        if(event.target.checked){
+            const newState = {...state, areasOfResearch: [...state.areasOfResearch, `"${event.target.name}"`]}
+            const newState2 = { ...newState, areasOfResearch: Array.from(new Set(newState.areasOfResearch))};
+            setState(newState2);
+        }else{
+            const filtered = state.areasOfResearch.filter(function(value, index, arr){
+                return value != `"${event.target.name}"`;
+            });
+            const newState = {...state, areasOfResearch: filtered};
+            setState(newState);
+            console.log(filtered);
+        }
+    }
 
     return (
         <div>
             <h4 className="mv3">
-                {formState.login ? 'Professor Login' : 'Professor Sign Up'}
+                {state.login ? 'Professor Login' : 'Professor Sign Up'}
             </h4>
-            <div className="flex flex-column">
-                {!formState.login && (
-                    <input className={"user"}
-                        value={formState.name}
-                        onChange={(e) =>
-                            setFormState({
-                                ...formState,
-                                name: e.target.value
-                            })
-                        }
+            <div className="flex flex-column" style={mystyle}>
+                {!state.login && (
+                    <input
+                        value={state.name}
+                        onChange={onNameHandle}
                         type="text"
                         placeholder="Your name"
                     />
                 )}
-                <input className={"email"}
-                    value={formState.email}
+                <input
+                    value={state.email}
                     onChange={(e) =>
-                        setFormState({
-                            ...formState,
+                        setState({
+                            ...state,
                             email: e.target.value
                         })
                     }
                     type="text"
                     placeholder="Your email address"
                 />
-                <input className={"password"}
-                    value={formState.password}
+                <input
+                    value={state.password}
                     onChange={(e) =>
-                        setFormState({
-                            ...formState,
+                        setState({
+                            ...state,
                             password: e.target.value
                         })
                     }
                     type="password"
                     placeholder="Choose a safe password"
                 />
+                <p></p>
+                <label>
+                    <input
+                        type="Checkbox"
+                        name="Machine Learning"
+                        onChange={onCheckBoxChange}
+                    />
+                    <span>Machine Learning</span>
+                </label>
+                <label>
+                    <input
+                        type="Checkbox"
+                        name="RTOS"
+                        onChange={onCheckBoxChange}
+                    />
+                    <span>RTOS</span>
+                </label>
+                <label>
+                    <input
+                        type="Checkbox"
+                        name="Materials and Structures"
+                        onChange={onCheckBoxChange}
+                    />
+                    <span>Materials and Structures</span>
+                </label>
+                <label>
+                    <input
+                        type="Checkbox"
+                        name="Biomechanics"
+                        onChange={onCheckBoxChange}
+                    />
+                    <span>Biomechanics</span>
+                </label>
+                <p></p>
             </div>
-            <div className="flex mt3">
+            <div className="flex mt3" style={mystyle}>
                 <button
-                    className="pointermr2button"
-                    onClick={formState.login ? login : signup}
+                    className="pointer mr2 button"
+                    onClick={handleButton}
                 >
-                    {formState.login ? 'login' : 'create account'}
+                    {state.login ? 'login' : 'create account'}
                 </button>
                 <button
-                    className="pointerbutton"
+                    className="pointer button"
                     onClick={(e) =>
-                        setFormState({
-                            ...formState,
-                            login: !formState.login
+                        setState({
+                            ...state,
+                            login: !state.login
                         })
                     }
                 >
-                    {formState.login
-                        ? 'need to create an account?'
-                        : 'already have an account?'}
+                    {state.login
+                        ? 'Need an Account? Sign Up'
+                        : 'Have an Account? Login'}
                 </button>
             </div>
         </div>
     );
-
 };
 
 export default ProfLogin;
