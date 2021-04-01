@@ -1,0 +1,45 @@
+.plan-trip-button {
+    /* background-color: var(--bg); */
+    border-radius: 20px;
+    font-family: 'Rubik', sans-serif;
+    border: none;
+    height: 40px;
+    /* box-shadow: 2px 2px 4px 2px #888888; */
+    text-align: center;
+    padding: 10px;
+    width: 20%;
+    transition: all 0.5s;
+    cursor: pointer;
+    line-height: 0.8;
+    margin-top: 6px;
+}
+
+.plan-trip-button:hover {
+    background-color: rgb(156, 244, 167);
+}
+  
+.plan-trip-button span {
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    transition: 0.5s;
+}
+  
+.plan-trip-button span:after {
+    content: '\00bb';
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    right: -20px;
+    transition: 0.5s;
+}
+  
+.plan-trip-button:hover span {
+    padding-right: 25px;
+    
+}
+  
+.plan-trip-button:hover span:after {
+    opacity: 1;
+    right: 0;
+}

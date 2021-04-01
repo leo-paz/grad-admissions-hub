@@ -13,12 +13,32 @@
   --body-bg: rgb(16, 18, 34);
 }
 
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  border: 0px solid green;
+  -webkit-text-fill-color: white;
+  -webkit-box-shadow: 0 0 0px 1000px rgb(16, 18, 34) inset;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+ul {
+  list-style-type: none;
+}
+
 body {
   color: var(--sage-green);
   background-color: var(--body-bg);
   margin: 0;
   padding: 0;
   font-family: 'Rubik', sans-serif;
+  -webkit-appearance: none;
 }
 
 body::-webkit-scrollbar {
@@ -38,14 +58,40 @@ main {
   padding: 1rem;
 }
 
-.sign-up-container {
+.checkbox-container {
+  display:grid;
+  grid-template-columns: 33% 33% 33%;
+  grid-template-rows: 33% 33% 33%;
+}
+
+.center-container {
   display: flex;
-  flex-direction: row;
   position: fixed;
   top: 50%;
   left: 50%;
   /* bring your own prefixes */
   transform: translate(-50%, -50%);
+}
+
+.checkbox-list {
+  margin: 0;
+  margin-top: 25px;
+  padding: 0;
+  width: 100%;
+}
+
+.checkbox-item {
+  width: 33%;
+  height: 50px;
+  display: inline-block;
+}
+
+.prof-sign-up-container {
+  width: 45em;
+}
+
+.flex-col {
+  flex-direction: column;
 }
 
 .sign-up {

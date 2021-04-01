@@ -31,7 +31,7 @@ function SignUp() {
     }, [])
 
     return (
-        <div className="sign-up-container">
+        <div className="center-container">
             <div className="sign-up">
                 <Link to="/proflogin">
                     <img className="sign-up-img" src="professor.jpg"/>
