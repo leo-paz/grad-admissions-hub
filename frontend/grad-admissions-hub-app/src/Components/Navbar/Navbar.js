@@ -91,7 +91,7 @@ const Navbar = () => {
                     onMouseEnter={() => lottie.play('profile')}
                     onMouseLeave={() => lottie.stop('profile')}
                 >
-                    <Link className="nav-link" to="/signup">
+                    <Link className="nav-link" to="/profile">
                         <div className="standard-nav-animation" ref={profileContainer}/>
                         {/* <CatIcon /> */}
                         <span className="link-text">Profile</span>
