@@ -1,16 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 
-import { Redirect } from 'react-router-dom';
-
 import Checkbox from '../Components/Checkbox/Checkbox';
 import Input from '../Components/Input/Input';
 import Button from '../Components/Button/Button';
 
 import { Auth } from 'aws-amplify';
-
-const mystyle = {
-    marginLeft: "100px"
-};
 
 const ProfLogin = () => {
 
@@ -19,15 +13,26 @@ const ProfLogin = () => {
         email: '',
         password: '',
         name: '',
-        areasOfResearch: []
+        areasOfResearch: [],
+        verifying: false,
+        code: ''
     });
 
-    useEffect(async () => {
-        const userInfo = await Auth.currentUserInfo()
-        if (userInfo) {
-            const newState = { ...state, loggedIn: true }
-            setState(newState);
+    useEffect(() => {
+        async function getAuth() {
+            let currUser;
+            try {
+                currUser = await Auth.currentSession().then((res) => {
+                    console.log(res);
+                });
+            } catch (e) {
+                console.log(e);
+            }
+            if (currUser) {
+                setState({ ...state, loggedIn: true });
+            }
         }
+        getAuth();
     }, [])
 
     const checkboxes = [
@@ -37,10 +42,11 @@ const ProfLogin = () => {
         'Biomechanics'
     ]
 
-    const handleButton = async (event) => {
+    const handleSubmit = async (event) => {
 
         const requestProf = `{
             "Professor": {
+                "id": "${state.email}"
                 "name": "${state.name}",
                 "areasOfResearch": [${state.areasOfResearch}]
             }
@@ -52,10 +58,13 @@ const ProfLogin = () => {
                 password: state.password,
                 attributes: {
                     name: state.name,
+                    profile: 'professor'
                     // other custom attributes 
                 }
             })
             if (user) {
+                const newState = { ...state, verifying: true }
+                setState(newState);
                 console.log(user);
                 console.log("Successfully signed up!");
 
@@ -64,6 +73,20 @@ const ProfLogin = () => {
                         method: 'POST',
                         body: requestProf
                     })
+            }
+        } catch (error) {
+            console.log('error signing up:', error);
+        }
+    }
+
+    const handleVerify = async (event) => {
+        try {
+            const data = await Auth.confirmSignUp(state.email, state.code)
+            if (data) {
+                const newState = { ...state, verifying: false }
+                setState(newState);
+                console.log(data);
+                console.log("Successfully verified");
             }
         } catch (error) {
             console.log('error signing up:', error);
@@ -137,6 +160,7 @@ const ProfLogin = () => {
                     type="password"
                     placeholder="Choose a safe password"
                 /> */}
+                <h2>Areas of Research</h2>
                 <ul className="checkbox-list">
                     {checkboxes.map((elem, idx) => (
                         <li className="checkbox-item">
@@ -149,9 +173,29 @@ const ProfLogin = () => {
                     ))}
                 </ul>
                 <Button
-                    onClick={handleButton}
+                    onClick={handleSubmit}
                     text="Sign up"
                 />
+                {state.verifying && (
+                    <div>
+                        <Input
+                            placeholder="Verification Code"
+                            onChange={(e) =>
+                                setState({
+                                    ...state,
+                                    code: e.target.value
+                                })
+                            }
+                            type="text"
+                            label="email"
+                            value={state.code}
+                        />
+                        <Button
+                            onClick={handleVerify}
+                            text="Verify"
+                        />
+                    </div>
+                )}
             </div>
         </div>
     );

@@ -15,14 +15,17 @@ public class ParsingCreateRequests {
 
     public static Professor buildProfessorFromFields(LinkedHashMap<String, Object> professorFields) {
         if (!validProfessorFields(professorFields)) {
-            throw new IllegalArgumentException("IllegalArgumentException: Must have name, areasOfResearch, and applications");
+            throw new IllegalArgumentException("IllegalArgumentException: Must have id, name, areasOfResearch, and applications");
         }
-        var prof = new Professor((String) professorFields.get("name"), (List<String>) professorFields.get("areasOfResearch"));
+        var prof = new Professor((String) professorFields.get("id"),
+                (String) professorFields.get("name"), (List<String>) professorFields.get("areasOfResearch"));
         return prof;
     }
 
     private static boolean validProfessorFields(LinkedHashMap<String, Object> professorFields) {
-        if (professorFields.get("name") == null) {
+        if (professorFields.get("id") == null) {
+            return false;
+        } else if (professorFields.get("name") == null) {
             return false;
         } else if (professorFields.get("areasOfResearch") == null) {
             return false;
@@ -32,12 +35,13 @@ public class ParsingCreateRequests {
 
     public static Applicant buildApplicantFromFields(LinkedHashMap<String, Object> applicantFields) {
         if (!validApplicantFields(applicantFields)) {
-            throw new IllegalArgumentException("IllegalArgumentException: Must have name, graduationDate, majors, and applications");
+            throw new IllegalArgumentException("IllegalArgumentException: Must have id, name, graduationDate, majors, and applications");
         }
         Applicant applicant = null;
         try {
-            applicant = new Applicant((String) applicantFields.get("name"),
-                                        new SimpleDateFormat("dd/MM/yyyy").parse((String) applicantFields.get("graduationDate")),
+            applicant = new Applicant((String) applicantFields.get("id"),
+                                      (String) applicantFields.get("name"),
+                                       new SimpleDateFormat("dd/MM/yyyy").parse((String) applicantFields.get("graduationDate")),
                                         (List<String>) applicantFields.get("majors"));
         } catch (ParseException e) {
             e.printStackTrace();
@@ -46,7 +50,9 @@ public class ParsingCreateRequests {
     }
 
     private static boolean validApplicantFields(LinkedHashMap<String, Object> applicantFields) {
-        if (applicantFields.get("name") == null) {
+        if (applicantFields.get("id") == null){
+            return false;
+        } else if (applicantFields.get("name") == null) {
             return false;
         } else if (applicantFields.get("graduationDate") == null) {
             return false;

@@ -32,6 +32,8 @@ ul {
   list-style-type: none;
 }
 
+button:focus {outline:0;}
+
 body {
   color: var(--sage-green);
   background-color: var(--body-bg);
@@ -67,6 +69,7 @@ main {
 .center-container {
   display: flex;
   position: fixed;
+  flex-wrap: wrap;
   top: 50%;
   left: 50%;
   /* bring your own prefixes */
@@ -90,8 +93,18 @@ main {
   width: 45em;
 }
 
+.login-container {
+  flex-basis: 100%;
+  justify-content: center;
+}
+
 .flex-col {
   flex-direction: column;
+}
+
+.sign-up-boxes {
+  display: flex;
+  flex-direction: row;
 }
 
 .sign-up {
@@ -99,10 +112,12 @@ main {
   background-color: var(--bg-primary);
   margin: 1rem;
   min-width: 35rem;
+  max-width: 560px;
   height: 15rem;
   border-radius: 20px;
   box-shadow: 2px 1px 20px 2px #848484;
-  transition: .2s;
+  transition: .4s;
+  flex-basis: 50%;
 }
 
 .sign-up:hover {
@@ -116,10 +131,29 @@ main {
   left: 10px;
   border-radius: 20px;
 }
+.break {
+  flex-basis: 100%;
+  height: 0;
+}
 
 .sign-up-text {
   margin: 0 0.8rem;
   text-align: center;
+}
+.sign-in-login-text {
+  display:block;
+  flex-basis: 100%;
+  text-align: center;
+  color: #848484;
+}
+
+.login-link {
+  cursor: pointer;
+  color: white;
+}
+
+.login-link:focus, .login-link:hover{
+  color: var(--sage-green);
 }
 
 .sign-up-animation {
