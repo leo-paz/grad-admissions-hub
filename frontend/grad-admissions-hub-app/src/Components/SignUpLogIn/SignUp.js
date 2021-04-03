@@ -75,7 +75,11 @@ function SignUp() {
             )}
             {!login && (
                 <div className="sign-up-boxes">
-                    <div className="sign-up">
+                    <div 
+                        className="sign-up"
+                        onMouseEnter={() => lottie.play('professor')}
+                        onMouseLeave={() => lottie.stop('professor')}
+                    >
                         <Link to="/proflogin">
                             <img className="sign-up-img" src="professor.jpg" />
                         </Link>
@@ -85,13 +89,16 @@ function SignUp() {
                                 <div
                                     className="sign-up-animation"
                                     ref={goProfessorContainer}
-                                    onMouseEnter={() => lottie.play('professor')}
-                                    onMouseLeave={() => lottie.stop('professor')}
+                                    
                                 />
                             </Link>
                         </div>
                     </div>
-                    <div className="sign-up">
+                    <div 
+                        className="sign-up"
+                        onMouseEnter={() => lottie.play('applicant')}
+                        onMouseLeave={() => lottie.stop('applicant')}
+                    >
                         <Link to="/applicantSignup">
                             <img className="sign-up-img" src="students.jpg" />
                         </Link>
@@ -101,8 +108,7 @@ function SignUp() {
                                 <div
                                     className="sign-up-animation"
                                     ref={goApplicantContainer}
-                                    onMouseEnter={() => lottie.play('applicant')}
-                                    onMouseLeave={() => lottie.stop('applicant')}
+                                    
                                 />
                             </Link>
                         </div>
