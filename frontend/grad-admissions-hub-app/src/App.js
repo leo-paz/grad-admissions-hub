@@ -6,6 +6,8 @@ import About from "./Pages/About";
 import ProfLogin from "./Pages/ProfLogin";
 import Submission from "./Pages/Submission";
 import Review from "./Pages/Review";
+import Professor from './Pages/Professor';
+import Applicant from './Pages/Applicant';
 import Profile from './Pages/Profile';
 import Navbar from "./Components/Navbar/Navbar";
 
@@ -28,6 +30,8 @@ function App() {
           <Route path="/submission" component={Submission} />
           <Route path="/review" component={Review} />
           <Route path="/profile" component={Profile} />
+          {/* <Route path="/professor" component={Professor} />
+          <Route path="/applicant" component={Applicant} /> */}
         </Switch>
       </div>
     </Router>

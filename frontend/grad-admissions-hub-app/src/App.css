@@ -11,6 +11,7 @@
   --transition-speed: 600ms;
   --sage-green: rgb(156, 244, 167);
   --body-bg: rgb(16, 18, 34);
+  --text-red: rgb(240, 149, 140);
 }
 
 input:-webkit-autofill,
@@ -93,11 +94,6 @@ main {
   width: 45em;
 }
 
-.login-container {
-  flex-basis: 100%;
-  justify-content: center;
-}
-
 .flex-col {
   flex-direction: column;
 }
@@ -105,6 +101,38 @@ main {
 .sign-up-boxes {
   display: flex;
   flex-direction: row;
+}
+
+.profile-info-card {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg-primary);
+  border-radius: 20px;
+  box-shadow: 2px 1px 20px 2px #848484;
+  min-width: 40rem;
+  max-width: 560px;
+  padding: 25px;
+}
+
+.profile-info-card input[type="Date"] {
+  margin-top: 10px;
+}
+
+.profile-info-card h1 {
+  margin: 5px 0px;
+}
+
+.profile-info-card h2 {
+  margin-top: 15px;
+  margin-bottom: 0px;
+}
+
+.center-sign-out {
+  text-align: center;
+}
+.center-sign-out button:hover {
+  text-align: center;
+  background-color: var(--text-red);
 }
 
 .sign-up {
@@ -145,6 +173,20 @@ main {
   flex-basis: 100%;
   text-align: center;
   color: #848484;
+}
+
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 40em;
+  flex-basis: 100%;
+  justify-content: center;
+}
+
+.login-container button {
+  margin-top: 18px;
 }
 
 .login-link {

@@ -1,7 +1,7 @@
 import React from 'react';
 import './input.scss';
 
-function Input({label, onChange, required, placeholder, type, value}) {
+function Input({label, onChange, required, placeholder, type, value, readOnly=false}) {
 
     return (
         <div class="form__group field">
@@ -15,6 +15,7 @@ function Input({label, onChange, required, placeholder, type, value}) {
                 required={required}
                 onChange={onChange}
                 value={value}
+                readOnly={readOnly}
             />
             <label for={label} class="form__label">{placeholder}</label>
         </div>
