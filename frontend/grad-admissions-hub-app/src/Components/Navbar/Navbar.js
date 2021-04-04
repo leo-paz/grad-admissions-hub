@@ -102,7 +102,7 @@ const Navbar = () => {
                     onMouseEnter={() => lottie.play('applications')}
                     onMouseLeave={() => lottie.stop('applications')}
                 >
-                    <Link className="nav-link" to="/about">
+                    <Link className="nav-link" to="/submission">
                         <div className="standard-nav-animation" ref={applicationsContainer}/>
                         {/* <AlienIcon /> */}
                         <span className="link-text">Applications</span>

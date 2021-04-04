@@ -3,7 +3,7 @@ import lottie from 'lottie-web';
 
 import './checkbox.scss';
 
-function Checkbox({ onCheckBoxChange, name, checked }) {
+function Checkbox({ onCheckBoxChange, name, checked, disabled }) {
     // const radioContainer = useRef(null);
 
     // useEffect(() => {
@@ -16,11 +16,17 @@ function Checkbox({ onCheckBoxChange, name, checked }) {
     //         name: 'professor'
     //     })
     // }, [])
-    const style = {"margin": "2px"}
+    const style = { "margin": "2px" }
 
     return (
         <div>
-            <input type="checkbox" id={name} />
+            <input
+                onChange={onCheckBoxChange}
+                type="checkbox"
+                id={name}
+                disabled={disabled}
+                checked={true}
+            />
             <label for={name} style={style}>{name}</label>
         </div>
     )
