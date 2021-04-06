@@ -4,7 +4,7 @@ const DataFetch = () => {
 
     const [state, setState] = useState({
         Approved: "",
-        graduationDate:"",
+        graduationDate: "",
         majors: []
     })
 
@@ -23,85 +23,85 @@ const DataFetch = () => {
     }`
 
     const onNameChangeHandle = (event) => {
-        const newState = {...state, name: event.target.value};
+        const newState = { ...state, name: event.target.value };
         setState(newState);
     }
 
     const handleButton = (event) => {
         console.log("Application Sent!");
-        fetch("https://j2ofh2owcb.execute-api.us-east-1.amazonaws.com/main/graphql",{
+        fetch("https://j2ofh2owcb.execute-api.us-east-1.amazonaws.com/main/graphql", {
             method: 'POST',
             body: requestBody
 
         })
     }
-	const onCheckBoxChange = (event) => {
+    const onCheckBoxChange = (event) => {
         console.log(event.target.name);
         console.log(event.target.checked);
-        if(event.target.checked){
-          const newState = {...state, majors: [...state.majors, `"${event.target.name}"`]}
-          const newState2 = { ...newState, majors: Array.from(new Set(newState.majors))};
-          setState(newState2);
-        }else{
-            const filtered = state.majors.filter(function(value, index, arr){ 
+        if (event.target.checked) {
+            const newState = { ...state, majors: [...state.majors, `"${event.target.name}"`] }
+            const newState2 = { ...newState, majors: Array.from(new Set(newState.majors)) };
+            setState(newState2);
+        } else {
+            const filtered = state.majors.filter(function (value, index, arr) {
                 return value != `"${event.target.name}"`;
             });
-            const newState = {...state, majors: filtered};
+            const newState = { ...state, majors: filtered };
             setState(newState);
             console.log(filtered);
         }
     }
 
-  return (
-    <div className="page">
-      <form>
-  <p> <label>
-    Professor:
-    <input type="Text" name="name" onChange={onNameChangeHandle}/>
-  </label>
-  </p>
+    return (
+        <div className="">
+            <form>
+                <p> <label>
+                    Professor:
+    <input type="Text" name="name" onChange={onNameChangeHandle} />
+                </label>
+                </p>
 
-  <p>
-  <label>
-                    <input
-                        type="Checkbox"
-                        name="Machine Learning"
-                        onChange={onCheckBoxChange}
-                    />
-                    <span>Machine Learning</span>
-                </label>
+                <p>
+                    <label>
+                        <input
+                            type="Checkbox"
+                            name="Machine Learning"
+                            onChange={onCheckBoxChange}
+                        />
+                        <span>Machine Learning</span>
+                    </label>
+                    <label>
+                        <input
+                            type="Checkbox"
+                            name="RTOS"
+                            onChange={onCheckBoxChange}
+                        />
+                        <span>RTOS</span>
+                    </label>
+                    <label>
+                        <input
+                            type="Checkbox"
+                            name="Materials and Structures"
+                            onChange={onCheckBoxChange}
+                        />
+                        <span>Materials and Structures</span>
+                    </label>
+                    <label>
+                        <input
+                            type="Checkbox"
+                            name="Biomechanics"
+                            onChange={onCheckBoxChange}
+                        />
+                        <span>Biomechanics</span>
+                    </label>
+                </p>
                 <label>
-                    <input
-                        type="Checkbox"
-                        name="RTOS"
-                        onChange={onCheckBoxChange}
-                    />
-                    <span>RTOS</span>
+                    Press Button to Apply to Gradutate:
+    <input type="button" value="Apply" onClick={handleButton} />
                 </label>
-                <label>
-                    <input
-                        type="Checkbox"
-                        name="Materials and Structures"
-                        onChange={onCheckBoxChange}
-                    />
-                    <span>Materials and Structures</span>
-                </label>
-                <label>
-                    <input
-                        type="Checkbox"
-                        name="Biomechanics"
-                        onChange={onCheckBoxChange}
-                    />
-                    <span>Biomechanics</span>
-                </label>
-        </p>
-  <label>
-    Press Button to Apply to Gradutate:
-    <input type="button" value="Apply" onClick={handleButton}/>
-  </label>
-  </form>
-  </div>
-  );
+            </form>
+        </div>
+    );
 };
 
 export default DataFetch;

@@ -10,6 +10,7 @@ import Professor from './Pages/Professor';
 import Applicant from './Pages/Applicant';
 import Profile from './Pages/Profile';
 import Navbar from "./Components/Navbar/Navbar";
+import Application from './Pages/Application';
 
 
 import Amplify from 'aws-amplify';
@@ -30,6 +31,7 @@ function App() {
           <Route path="/submission" component={Submission} />
           <Route path="/review" component={Review} />
           <Route path="/profile" component={Profile} />
+          <Route path="/application/:id" component={Application} />
           {/* <Route path="/professor" component={Professor} />
           <Route path="/applicant" component={Applicant} /> */}
         </Switch>
