@@ -65,6 +65,7 @@ function Professor({ id }) {
                             key={idx}
                             name={elem}
                             disabled={true}
+                            checked={true}
                         />
                     </li>
                 ))}

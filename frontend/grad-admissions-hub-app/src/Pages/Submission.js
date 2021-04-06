@@ -1,12 +1,32 @@
-import React, {useEffect} from 'react';
+import React, { useEffect, useState } from 'react';
 
 import DataFetch from '../Components/DataFetch';
-import Accordion from '../Components/Accordion/Accordion';
+import { Link } from 'react-router-dom';
+
+const orgApplications = [
+    {
+        areasOfResearch: ['Biology', 'Neuroscience', 'Quiditch'],
+        id: 'omarleopaz@hotmail.com'
+    },
+    {
+        areasOfResearch: ['Artifical Intelligence', 'Cryptography', 'Baking'],
+        id: 'omarleopaz@hotmail.com'
+    },
+    {
+        areasOfResearch: ['Quantum Computing', 'Neuroscience', 'Bartending'],
+        id: 'omarleopaz@hotmail.com'
+    },
+    {
+        areasOfResearch: ['Cloud Computing', 'Anatomy', 'Witchcraft'],
+        id: 'omarleopaz@hotmail.com'
+    },    
+]
 
 const Submission = () => {
+    const [applications, setApplications] = useState(orgApplications);
 
     useEffect(() => {
-        async function getApplicationsById() {
+        async function getApplicationsForUser() {
             try {
                 // Get current 
                 // TODO: Call backend with apollo client here
@@ -15,31 +35,25 @@ const Submission = () => {
                 console.log(e);
             }
         }
-        getApplicationsById();
+        getApplicationsForUser();
     });
 
     return (
         <div className="center-container">
-            <h1>Submission Page</h1>
+            <h1>Create An Application</h1>
             <DataFetch></DataFetch>
-            <Accordion
-                title="What is your return policy?"
-                content="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-            />
-            <Accordion
-                title="How do I track my order?"
-                content="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-            />
-            <Accordion
-                title="Can I purchase items again?"
-                content="
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-        </br>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-        </br>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-        "
-            />
+            <h1>Applications </h1>
+            <ul className="application-list">
+                {applications.map((elem, idx) => (
+                    <li key={idx} className="application-preview">
+                        <Link className="application-link" to={`/application/${elem.id}`}>
+                            <span>
+                                {elem.areasOfResearch.join(", ")}
+                            </span>
+                        </Link>
+                    </li>
+                ))}
+            </ul>
         </div>
     )
 }

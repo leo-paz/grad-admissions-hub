@@ -20,7 +20,7 @@ function Accordion(props) {
       setActive === "active" ? "accordion__icon" : "accordion__icon rotate"
     );
     setShadowState(
-        setActive === "active" ? "none" : "2px 1px 6px 1px #848484"
+      setActive === "active" ? "none" : "2px 1px 6px 1px #848484"
     )
   }
 
@@ -32,14 +32,19 @@ function Accordion(props) {
       </button>
       <div
         ref={content}
-        style={{ maxHeight: `${setHeight}`,
-                 boxShadow: `${setShadow}` }}
+        style={{
+          maxHeight: `${setHeight}`,
+          boxShadow: `${setShadow}`
+        }}
         className="accordion__content"
       >
-        <div
+        {/* <div
           className="accordion__text"
           dangerouslySetInnerHTML={{ __html: props.content }}
-        />
+        /> */}
+        <div className="inner-content">
+          {props.children}
+        </div>
       </div>
     </div>
   );
