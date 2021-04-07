@@ -46,6 +46,7 @@ function Applicant({ id }) {
         <div className="profile-info-card">
             <h1>Applicant Profile</h1>
             <Input
+                id="usernameField"
                 placeholder="Full name"
                 type="text"
                 label="name"
@@ -69,7 +70,7 @@ function Applicant({ id }) {
             <h2>Majors</h2>
             <ul className="checkbox-list">
                 {majors.map((elem, idx) => (
-                    <li className="checkbox-item">
+                    <li key= {elem} className="checkbox-item">
                         <Checkbox
                             key={idx}
                             name={elem}

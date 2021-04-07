@@ -4,11 +4,11 @@ import './input.scss';
 function Input({label, onChange, required, placeholder, type, value, readOnly=false}) {
 
     return (
-        <div class="form__group field">
+        <div className="form__group field">
             <input
                 autoComplete="off" 
                 type={type} 
-                class="form__field" 
+                className="form__field" 
                 placeholder={placeholder}
                 name={label} 
                 id={label} 
@@ -17,7 +17,7 @@ function Input({label, onChange, required, placeholder, type, value, readOnly=fa
                 value={value}
                 readOnly={readOnly}
             />
-            <label for={label} class="form__label">{placeholder}</label>
+            <label htmlFor={label} className="form__label">{placeholder}</label>
         </div>
     )
 }
