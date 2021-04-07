@@ -67,6 +67,22 @@ public class GraphQLDataFetchers {
         };
     }
 
+    public DataFetcher getReviewsInApplicationDataFetcher() {
+        return dataFetchingEnvironment -> {
+            Application application = dataFetchingEnvironment.getSource();
+            String applicationId = application.getId();
+            List<Review> reviews = this.reviewRepo.findAllReviewsForApplication(applicationId);
+            return reviews;
+        };
+    }
+
+    public DataFetcher getAllProfessors() {
+        return dataFetchingEnvironment -> {
+            List<Professor> professors = this.profRepo.findAll();
+            return professors;
+        };
+    }
+
     public DataFetcher getProfessorInApplicationDataFetcher() {
         return dataFetchingEnvironment -> {
             Application application = dataFetchingEnvironment.getSource();

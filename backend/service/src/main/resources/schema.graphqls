@@ -3,6 +3,7 @@ type Query {
   applicantById(id: ID): Applicant
   applicationById(id: ID): Application
   reviewById(id: ID): Review
+  professors: [Professor]
 }
 
 type Professor {
