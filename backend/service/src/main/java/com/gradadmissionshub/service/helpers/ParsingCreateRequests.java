@@ -106,7 +106,7 @@ public class ParsingCreateRequests {
 
     public static Review buildReviewFromFields(LinkedHashMap<String, Object> reviewFields) {
         if (!validReviewFields(reviewFields)) {
-            throw new IllegalArgumentException("IllegalArgumentException: Must have ranking, title, body, professor, and dateSubmitted");
+            throw new IllegalArgumentException("IllegalArgumentException: Must have ranking, title, body, professor, application, and dateSubmitted");
         }
         Review review = null;
         try {
@@ -114,7 +114,8 @@ public class ParsingCreateRequests {
                     (String) reviewFields.get("title"),
                     (String) reviewFields.get("body"),
                     (String) reviewFields.get("professor"),
-                    new SimpleDateFormat("dd/MM/yyyy").parse((String) reviewFields.get("dateSubmitted")));
+                    new SimpleDateFormat("dd/MM/yyyy").parse((String) reviewFields.get("dateSubmitted")),
+                    (String) reviewFields.get("application"));
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -131,6 +132,8 @@ public class ParsingCreateRequests {
         } else if (reviewFields.get("professor") == null) {
             return false;
         } else if (reviewFields.get("dateSubmitted") == null) {
+            return false;
+        } else if (reviewFields.get("application") == null) {
             return false;
         }
         return true;

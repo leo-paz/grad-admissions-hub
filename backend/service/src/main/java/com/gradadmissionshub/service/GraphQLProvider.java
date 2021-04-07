@@ -74,7 +74,8 @@ public class GraphQLProvider {
                         .dataFetcher("applications", graphQLDataFetchers.getApplicationsInApplicantDataFetcher()))
                 .type(newTypeWiring("Application")
                         .dataFetcher("professor", graphQLDataFetchers.getProfessorInApplicationDataFetcher())
-                        .dataFetcher("applicant", graphQLDataFetchers.getApplicantInApplicationDataFetcher()))
+                        .dataFetcher("applicant", graphQLDataFetchers.getApplicantInApplicationDataFetcher())
+                        .dataFetcher("reviews", graphQLDataFetchers.getReviewsInApplicationDataFetcher()))
                 .type(newTypeWiring("Review")
                         .dataFetcher("professor", graphQLDataFetchers.getProfessorInReviewDataFetcher()))
                 .build();
