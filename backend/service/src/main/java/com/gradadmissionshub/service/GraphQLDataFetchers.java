@@ -67,6 +67,13 @@ public class GraphQLDataFetchers {
         };
     }
 
+    public DataFetcher getAllProfessors() {
+        return dataFetchingEnvironment -> {
+            List<Professor> professors = this.profRepo.findAll();
+            return professors;
+        };
+    }
+
     public DataFetcher getProfessorInApplicationDataFetcher() {
         return dataFetchingEnvironment -> {
             Application application = dataFetchingEnvironment.getSource();
