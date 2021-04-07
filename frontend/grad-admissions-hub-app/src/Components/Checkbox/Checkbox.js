@@ -24,8 +24,9 @@ function Checkbox({ onCheckBoxChange, name, checked, disabled }) {
                 onChange={onCheckBoxChange}
                 type="checkbox"
                 id={name}
+                name={name}
                 disabled={disabled}
-                checked={!onCheckBoxChange && checked}
+                //checked={!onCheckBoxChange && checked}
             />
             <label htmlFor={name} style={style}>{name}</label>
         </div>

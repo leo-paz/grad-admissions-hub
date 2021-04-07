@@ -46,7 +46,7 @@ function SignUp() {
         } catch (error) {
           console.log('error signing in', error);
         }
-      }
+    }
 
     return (
         <div className="center-container">

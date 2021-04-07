@@ -96,6 +96,8 @@ function Application(props) {
                 <p>{application.professor.id}</p>
                 <h3>Date Submitted</h3>
                 <p>{application.dateSubmmited.toDateString()}</p>
+                <h3>Areas Of Interest</h3>
+                <p>{application.areasOfResearch.join(", ")}</p>
 
                 <h2>Reviews</h2>
                 {reviews.map((elem, idx) => (

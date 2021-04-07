@@ -103,6 +103,69 @@ main {
   flex-direction: row;
 }
 
+.create-application-card {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 100%;
+  background-color: var(--bg-primary);
+  border-radius: 20px;
+  box-shadow: 2px 1px 20px 2px #848484;
+  min-width: 40rem;
+  max-width: 560px;
+  padding: 25px;
+}
+
+.create-application-card input[type="file"] {
+  display: none;
+}
+
+.create-application-card label {
+  cursor: pointer;
+  display: flex;
+  line-height: 0.7;
+  justify-content: center;
+}
+
+.upload-document-animation {
+  width: 2.5rem;
+  min-width: 2.5rem;
+  height: 2.5rem;
+  min-height: 2.5rem;
+  margin: 0;
+}
+
+.upload-container {
+  margin: 10px 0px;
+  display: flex;
+}
+
+.upload-button-container {
+  text-align: center;
+  flex-basis: 33%;
+}
+
+.create-application-card h1 {
+  margin: 5px 0px;
+}
+
+.create-application-card h2 {
+  margin-top: 15px;
+  margin-bottom: 0px;
+}
+
+.select-box-container {
+  display: flex;
+  flex-basis: 100%;
+}
+
+.center-apply {
+  text-align: center;
+}
+
+.center-apply > button:hover {
+  background-color: var(--sage-green);
+}
+
 .profile-info-card {
   display: flex;
   flex-direction: column;
@@ -186,7 +249,6 @@ main {
   text-align: center;
 }
 .center-sign-out button:hover {
-  text-align: center;
   background-color: var(--text-red);
 }
 
@@ -395,6 +457,7 @@ main {
   color: var(--sage-green);
   transform: scale(1.05);
 }
+
 /* .navbar:hover .logo- svg {
   transform: rotate(-180deg);
 } */

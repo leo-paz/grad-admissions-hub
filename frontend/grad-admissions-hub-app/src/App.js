@@ -5,7 +5,6 @@ import ApplicantSignup from "./Pages/ApplicantSignup";
 import About from "./Pages/About";
 import ProfLogin from "./Pages/ProfLogin";
 import Submission from "./Pages/Submission";
-import Review from "./Pages/Review";
 import Professor from './Pages/Professor';
 import Applicant from './Pages/Applicant';
 import Profile from './Pages/Profile';
@@ -29,7 +28,6 @@ function App() {
           <Route path="/" exact component={Home} />
           <Route path="/applicantSignup" component={ApplicantSignup} />
           <Route path="/submission" component={Submission} />
-          <Route path="/review" component={Review} />
           <Route path="/profile" component={Profile} />
           <Route path="/application/:id" component={Application} />
           {/* <Route path="/professor" component={Professor} />
