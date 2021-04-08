@@ -59,7 +59,7 @@ const CreateApplication = () => {
             renderer: 'svg',
             loop: false,
             autoplay: false,
-            animationData: require('../animations/settings.json'),
+            animationData: require('../animations/document-upload.json'),
             name: 'resume'
         })
         lottie.loadAnimation({
@@ -67,7 +67,7 @@ const CreateApplication = () => {
             renderer: 'svg',
             loop: false,
             autoplay: false,
-            animationData: require('../animations/settings.json'),
+            animationData: require('../animations/document-upload.json'),
             name: 'audit'
         })
         lottie.loadAnimation({
@@ -75,7 +75,7 @@ const CreateApplication = () => {
             renderer: 'svg',
             loop: false,
             autoplay: false,
-            animationData: require('../animations/settings.json'),
+            animationData: require('../animations/document-upload.json'),
             name: 'transcript'
         })
 

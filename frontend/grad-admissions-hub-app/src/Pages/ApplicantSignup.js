@@ -83,7 +83,6 @@ const ApplicantSignup = () => {
     const newDate = "" + (parseInt(date.getDate()) + 1) + "/" + (parseInt(date.getMonth()) + 1) + "/" + date.getFullYear();
     const newState = { ...state, graduationDate: newDate };
     setState(newState);
-
   }
 
   const onCheckBoxChange = (event) => {

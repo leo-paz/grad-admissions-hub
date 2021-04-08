@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import Review from '../Components/Review/Review';
+import CreateReview from '../Components/Review/CreateReview';
 // id: ID
 //   applicant: Applicant
 //   professor: Professor
@@ -40,25 +41,25 @@ const orgReviews = [
     {
         title: "Rubbish m8",
         body: "Bloody rubbsih",
-        ranking: 1,
+        ranking: [1],
         dateSubmitted: new Date()
     },
     {
         title: "Great",
         body: "Great stuff",
-        ranking: 4,
+        ranking: [1, 2, 3, 4],
         dateSubmitted: new Date()
     },
     {
         title: "Good",
         body: "Good stuff",
-        ranking: 3,
+        ranking: [1, 2, 3],
         dateSubmitted: new Date()
     },
     {
         title: "Bloody Brilliant m8",
         body: "This chap is phenomenal",
-        ranking: 5,
+        ranking: [1, 2, 3, 4,5 ,6, 7, 5],
         dateSubmitted: new Date()
     },
 ]
@@ -103,8 +104,17 @@ function Application(props) {
                 {reviews.map((elem, idx) => (
                     <Review
                         title={elem.title}
+                        id={idx}
+                        body={elem.body}
+                        date={elem.dateSubmitted}
+                        rating={elem.ranking}
                     />
                 ))}
+
+                <CreateReview
+                    applicationId={application.id}
+                    professorId={"9cc14e72-eca7-4528-b2b8-1ab6f16ce02a"}
+                />
             </div>
         </div>
     )

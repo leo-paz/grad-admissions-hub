@@ -1,9 +1,24 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Chevron from "./Chevron";
+
+import lottie from 'lottie-web';
 
 import "./Accordion.css";
 
 function Accordion(props) {
+
+  const reviewContainer = useRef(null);
+  useEffect(() => {
+    lottie.loadAnimation({
+      container: reviewContainer.current,
+      renderer: 'svg',
+      loop: false,
+      autoplay: false,
+      animationData: require('../../animations/review.json'),
+      name: `review${props.id}`
+    })
+  }, [])
+
   const [setActive, setActiveState] = useState("");
   const [setHeight, setHeightState] = useState("0px");
   const [setRotate, setRotateState] = useState("accordion__icon");
@@ -26,9 +41,15 @@ function Accordion(props) {
 
   return (
     <div className="accordion__section">
-      <button className={`accordion ${setActive}`} onClick={toggleAccordion}>
-        <p className="accordion__title">{props.title}</p>
-        <Chevron className={`${setRotate}`} width={10} fill={"#777"} />
+      <button
+        onMouseEnter={() => lottie.play(`review${props.id}`)}
+        onMouseLeave={() => lottie.stop(`review${props.id}`)}
+        className={`accordion ${setActive}`} 
+        onClick={toggleAccordion}
+        >
+        <p className="accordion__title">{`"${props.title}"`}</p>
+        <div className="review-animation" ref={reviewContainer} />
+        {/* <Chevron className={`${setRotate}`} width={10} fill={"#777"} /> */}
       </button>
       <div
         ref={content}
