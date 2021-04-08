@@ -20,7 +20,7 @@ const orgApplications = [
     {
         areasOfResearch: ['Cloud Computing', 'Anatomy', 'Witchcraft'],
         id: 'omarleopaz@hotmail.com'
-    },    
+    },
 ]
 
 const Submission = () => {
@@ -41,19 +41,21 @@ const Submission = () => {
 
     return (
         <div className="center-container">
-            <CreateApplication/>
-            <h1>Applications </h1>
-            <ul className="application-list">
-                {applications.map((elem, idx) => (
-                    <li key={idx} className="application-preview">
-                        <Link className="application-link" to={`/application/${elem.id}`}>
-                            <span>
-                                {elem.areasOfResearch.join(", ")}
-                            </span>
-                        </Link>
-                    </li>
-                ))}
-            </ul>
+            <CreateApplication />
+            <div>
+                <h1>Applications </h1>
+                <ul className="application-list">
+                    {applications.map((elem, idx) => (
+                        <li key={idx} className="application-preview">
+                            <Link className="application-link" to={`/application/${elem.id}`}>
+                                <span>
+                                    {elem.areasOfResearch.join(", ")}
+                                </span>
+                            </Link>
+                        </li>
+                    ))}
+                </ul>
+            </div>
         </div>
     )
 }

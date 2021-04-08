@@ -126,6 +126,28 @@ main {
   justify-content: center;
 }
 
+.create-review-card {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 100%;
+  background-color: var(--bg-primary);
+  border-radius: 20px;
+  box-shadow: 2px 1px 20px 2px #848484;
+  padding: 25px;
+  margin-top: 20px;
+}
+
+.create-review-card .center-apply > button {
+  margin-top: 20px;
+}
+
+.create-review-card > h2 {
+  margin: 0px;
+}
+.create-review-card h2:last-of-type {
+  margin: 15px 0px;
+}
+
 .upload-document-animation {
   width: 2.5rem;
   min-width: 2.5rem;
@@ -458,6 +480,15 @@ main {
   transform: scale(1.05);
 }
 
+.star-animation {
+  display: flex;
+  flex-basis: 10%;
+}
+
+.stars-container {
+  display: flex;
+  flex-direction: row;
+}
 /* .navbar:hover .logo- svg {
   transform: rotate(-180deg);
 } */

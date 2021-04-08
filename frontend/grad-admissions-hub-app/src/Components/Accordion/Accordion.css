@@ -26,6 +26,10 @@
     box-shadow: 2px 1px 6px 1px #848484;
 }
 
+.accordion > p {
+    color: var(--sage-green);
+}
+
 /* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
 .accordion:hover,
 .active {
@@ -41,7 +45,7 @@
 .accordion__title {
     font-family: "Open Sans", sans-serif;
     font-weight: 600;
-    font-size: 14px;
+    font-size: 15px;
     text-align: left;
 }
 
@@ -77,4 +81,12 @@
 
 .inner-content {
     padding: 18px;
+}
+.review-animation {
+    width: 3rem;
+    min-width: 3rem;
+    height: 3rem;
+    min-height: 3rem;
+    margin: 0;
+    margin-left: auto;
 }
