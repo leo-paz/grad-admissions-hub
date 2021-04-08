@@ -8,6 +8,25 @@ import Checkbox from '../Components/Checkbox/Checkbox';
 
 import { Auth } from 'aws-amplify';
 
+import { LOAD_PROFS } from "../GraphQL/Queries";
+import { useQuery, gql } from '@apollo/client';
+//"9cc14e72-eca7-4528-b2b8-1ab6f16ce02a"
+
+function getProfessorQuery(id){
+
+    const PROF_QUERY = gql`
+    {
+        professorById(id: "${id}") {
+            id
+            name
+        }
+    }
+
+    `;
+
+    return PROF_QUERY;
+}
+
 const professor1 = {
     name: 'donald bailey',
     email: 'waddup@fam.com',
@@ -21,9 +40,15 @@ const checkboxes = [
     'Biomechanics'
 ]
 
-function Professor({ id }) {
+function Professor({id}) {
     const [professor, setProfessor] = useState(professor1);
+    const { loading, error, data } = useQuery(getProfessorQuery("9cc14e72-eca7-4528-b2b8-1ab6f16ce02a"));
 
+    if (loading) return 'Loading...';
+    if (error) return `Error! ${error.message}`;
+    console.log(data.professorById.name);
+
+    /*
     useEffect(() => {
         async function getProfessorById() {
             try {
@@ -35,6 +60,7 @@ function Professor({ id }) {
         }
         getProfessorById();
     }, [])
+    */
 
     const handleLogOut = (e) => {
         Auth.signOut();
@@ -47,14 +73,16 @@ function Professor({ id }) {
                 placeholder="Full name"
                 type="text"
                 label="name"
-                value={professor.name}
+                value={data.professorById.name}
+                //value={data.professorById.name}
                 readOnly={true}
             />
             <Input
                 placeholder="Email"
                 type="text"
                 label="email"
-                value={professor.email}
+
+                value={id}
                 readOnly={true}
             />
             <h2>Areas of Research</h2>
