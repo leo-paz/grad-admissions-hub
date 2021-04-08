@@ -45,7 +45,7 @@ const orgSelectedProf = {
     id: ''
 }
 
-const CreateApplication = () => {
+const CreateApplication = ({applicantId}) => {
     const [selectedProf, setSelectedProf] = useState(orgSelectedProf);
     const [profs, setProfs] = useState(orgProfs);
 
@@ -103,37 +103,10 @@ const CreateApplication = () => {
         areasOfResearch: []
     })
 
-    const requestBody = `{
-        "Application": {
-				"applicant": "2bfaa7bd-c1ba-4a06-b46a-058fc858cfee",
-				"professor": "328e1dd4-7928-4d7e-a538-f7a66cff8d11",
-				"dateSubmitted": "31/12/1998",
-				"areasOfResearch": [${state.areasOfResearch}],
-				"resumeDocumentId": "23",
-				"diplomaDocumentId": "45",
-				"auditDocumentId": "45",
-				"reviews": []
-			}
-		}
-    }`
-
     const handleSelect = (prof) => {
         setSelectedProf(prof);
     }
 
-    const onNameChangeHandle = (event) => {
-        const newState = { ...state, name: event.target.value };
-        setState(newState);
-    }
-
-    const handleButton = (event) => {
-        console.log("Application Sent!");
-        fetch("https://j2ofh2owcb.execute-api.us-east-1.amazonaws.com/main/graphql", {
-            method: 'POST',
-            body: requestBody
-
-        })
-    }
     const onCheckBoxChange = (event) => {
         console.log(event.target.name);
         console.log(event.target.checked);
@@ -162,8 +135,34 @@ const CreateApplication = () => {
 
     }
 
-    const handleApply = (e) => {
-        console.log('apply clicked');
+    const handleApply = async (event) => {
+
+        const date = new Date();
+        const newDate = "" + (parseInt(date.getDate()) + 1) + "/" + (parseInt(date.getMonth()) + 1) + "/" + date.getFullYear();
+
+        const requestBody = `{
+            "Application": {
+                "applicant": ${applicantId},
+                "professor": "${selectedProf.id}",
+                "dateSubmitted": "${newDate}",
+                "areasOfResearch": "${`dafsdfasdf`}",
+                "resumeDocumentId": "${`dafsdfasdf`}",
+                "auditDocumentId": "${`dafsdfasdf`}",
+                "reviews": []
+            }
+        }`
+
+        try {
+            console.log("Successfully signed up!");
+
+            fetch("https://j2ofh2owcb.execute-api.us-east-1.amazonaws.com/main/graphql",
+                {
+                    method: 'POST',
+                    body: requestBody 
+                }).then(res => console.log(res))
+        } catch (error) {
+            console.log('error signing up:', error);
+        }
     }
 
     return (

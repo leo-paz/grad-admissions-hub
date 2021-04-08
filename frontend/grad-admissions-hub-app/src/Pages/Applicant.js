@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 
 import { Redirect } from 'react-router-dom';
 
@@ -7,6 +7,8 @@ import { Auth } from 'aws-amplify';
 import Button from '../Components/Button/Button';
 import Input from '../Components/Input/Input';
 import Checkbox from '../Components/Checkbox/Checkbox';
+
+import { UserContext } from '../App';
 
 const majors = [
     'Engineering',
@@ -23,7 +25,8 @@ const applicant1 = {
     graduationDate: '04/27/2021'
 }
 
-function Applicant({ id }) {
+function Applicant() {
+    const { userState, setUserState } = useContext(UserContext);
     const [applicant, setApplicant] = useState(applicant1);
 
     useEffect(() => {
@@ -38,8 +41,22 @@ function Applicant({ id }) {
         getApplicantById();
     }, [])
 
-    const handleLogOut = (e) => {
-        Auth.signOut();
+    const handleLogOut = async (event) => {
+        console.log("logout is clicked!");
+        try {
+          await Auth.signOut()
+            .then((res) => {
+                console.log("sign out successful", res);
+                const newUser = {
+                    loggedIn: false,
+                    profile: '',
+                    id: ''
+                }
+                setUserState(newUser);
+            });
+        } catch (error) {
+          console.log('error signing in', error);
+        }
     }
 
     return (

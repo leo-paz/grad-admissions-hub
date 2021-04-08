@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useContext } from 'react';
 import lottie from 'lottie-web';
 
 import Input from '../Input/Input';
@@ -7,7 +7,11 @@ import Button from '../Button/Button';
 import { Link } from "react-router-dom";
 import { Auth } from 'aws-amplify';
 
+import { UserContext } from '../../App';
+
 function SignUp() {
+    const { userState, setUserState } = useContext(UserContext);
+
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [login, setLogin] = useState(false);
@@ -37,11 +41,17 @@ function SignUp() {
 
     const handleLogInButton = async (event) => {
         console.log("login is clicked!");
-    
         try {
           await Auth.signIn(email, password)
-            .then((response) => {
-              console.log("sign in successful", response);
+            .then((res) => {
+                const payload = res.signInUserSession.idToken.payload;
+                console.log("sign in successful", res);
+                const newUser = {
+                    loggedIn: true,
+                    profile: payload.profile,
+                    id: payload.email
+                }
+                setUserState(newUser);
             });
         } catch (error) {
           console.log('error signing in', error);

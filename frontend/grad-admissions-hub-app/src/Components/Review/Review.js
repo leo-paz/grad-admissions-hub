@@ -10,10 +10,6 @@ function Review({ title, body, rating, date, id }) {
 
     const [ratings, setRatings] = useState(new Array(rating));
 
-    useEffect(() => {
-
-    }, [])
-
     return (
         <Accordion
             title={title}
