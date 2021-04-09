@@ -18,7 +18,7 @@ function Clock(props) {
 
    return (
       <div>
-        <h4>The local time is {date.toLocaleTimeString()}.</h4>
+        <h4>{date.toLocaleTimeString()}.</h4>
       </div>
     );
 }
