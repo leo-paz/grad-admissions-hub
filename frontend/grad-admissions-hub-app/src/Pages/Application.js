@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 
 import Review from '../Components/Review/Review';
 import CreateReview from '../Components/Review/CreateReview';
+
+import { UserContext } from '../App';
 // id: ID
 //   applicant: Applicant
 //   professor: Professor
@@ -59,12 +61,13 @@ const orgReviews = [
     {
         title: "Bloody Brilliant m8",
         body: "This chap is phenomenal",
-        ranking: [1, 2, 3, 4,5 ,6, 7, 5],
+        ranking: [1, 2, 3, 4, 5, 6, 7, 5],
         dateSubmitted: new Date()
     },
 ]
 
 function Application(props) {
+    const { userState } = useContext(UserContext);
     const [reviews, setReviews] = useState(orgReviews);
     const [application, setApplication] = useState(orgApplication);
 
@@ -110,11 +113,12 @@ function Application(props) {
                         rating={elem.ranking}
                     />
                 ))}
-
-                <CreateReview
-                    applicationId={application.id}
-                    professorId={"9cc14e72-eca7-4528-b2b8-1ab6f16ce02a"}
-                />
+                {userState.profile === 'professor' && (
+                    <CreateReview
+                        applicationId={id}
+                        professorId={userState.id}
+                    />
+                )}
             </div>
         </div>
     )

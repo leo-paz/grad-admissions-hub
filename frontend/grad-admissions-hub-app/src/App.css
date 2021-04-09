@@ -73,7 +73,7 @@ main {
   flex-wrap: wrap;
   top: 50%;
   left: 50%;
-  /* bring your own prefixes */
+  max-height: 85vh;
   transform: translate(-50%, -50%);
 }
 
@@ -111,7 +111,6 @@ main {
   border-radius: 20px;
   box-shadow: 2px 1px 20px 2px #848484;
   min-width: 40rem;
-  max-width: 560px;
   padding: 25px;
 }
 
@@ -124,6 +123,10 @@ main {
   display: flex;
   line-height: 0.7;
   justify-content: center;
+}
+
+.applications {
+  flex-basis: 100%;
 }
 
 .create-review-card {
@@ -219,7 +222,7 @@ main {
   border-radius: 20px;
   box-shadow: 2px 1px 20px 2px #848484;
   min-width: 42rem;
-  max-width: 560px;
+  max-width: 800px;
   padding: 25px;
   overflow-y: scroll;
   max-height: 85vh;
@@ -456,18 +459,18 @@ main {
 .application-list {
   display: flex;
   flex-direction: column;
-  min-width: 40em;
+  min-width: 40rem;
+  padding: 0;
 }
 
 .application-preview {
-  width: 100%;
+  flex-basis: 100%;
   height: 2em;
   border-radius: 20px;
   background-color: var(--bg-primary);
   box-shadow: 2px 1px 20px 2px #848484;
-  margin: 10px;
+  margin: 10px 0px;
   padding: 10px;
-  width: 40em;
   transition: all 0.3s ease-in-out;
   color: var(--sage-green);
   cursor: pointer;

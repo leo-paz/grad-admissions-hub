@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 
 import { Redirect } from 'react-router-dom';
 
@@ -7,6 +7,8 @@ import Input from '../Components/Input/Input';
 import Checkbox from '../Components/Checkbox/Checkbox';
 
 import { Auth } from 'aws-amplify';
+import { UserContext } from '../App';
+
 
 import { LOAD_PROFS } from "../GraphQL/Queries";
 import { useQuery, gql } from '@apollo/client';
@@ -40,7 +42,8 @@ const checkboxes = [
     'Biomechanics'
 ]
 
-function Professor({id}) {
+function Professor() {
+    const { userState, setUserState } = useContext(UserContext);
     const [professor, setProfessor] = useState(professor1);
     const { loading, error, data } = useQuery(getProfessorQuery("9cc14e72-eca7-4528-b2b8-1ab6f16ce02a"));
 
@@ -62,8 +65,22 @@ function Professor({id}) {
     }, [])
     */
 
-    const handleLogOut = (e) => {
-        Auth.signOut();
+    const handleLogOut = async (event) => {
+        console.log("logout is clicked!");
+        try {
+          await Auth.signOut()
+            .then((res) => {
+                console.log("sign out successful", res);
+                const newUser = {
+                    loggedIn: false,
+                    profile: '',
+                    id: ''
+                }
+                setUserState(newUser);
+            });
+        } catch (error) {
+          console.log('error signing in', error);
+        }
     }
 
     return (
