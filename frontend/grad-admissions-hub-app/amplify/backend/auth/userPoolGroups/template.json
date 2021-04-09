@@ -1,0 +1,55 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Parameters": {
+        "authgradadmissionshub12b661cc12b661ccUserPoolId": {
+            "Type": "String",
+            "Default": "authgradadmissionshub12b661cc12b661ccUserPoolId"
+        },
+        
+        "authgradadmissionshub12b661cc12b661ccAppClientID": {
+            "Type": "String",
+            "Default": "authgradadmissionshub12b661cc12b661ccAppClientID"
+        },
+        "authgradadmissionshub12b661cc12b661ccAppClientIDWeb": {
+            "Type": "String",
+            "Default": "authgradadmissionshub12b661cc12b661ccAppClientIDWeb"
+        },
+        "AuthRoleArn": {
+            "Type": "String"
+        },
+        "UnauthRoleArn": {
+            "Type": "String"
+        },
+        "env": {
+            "Type": "String"
+        }
+    },
+    "Conditions": {
+        "ShouldNotCreateEnvResources": {
+            "Fn::Equals": [
+                {
+                    "Ref": "env"
+                },
+                "NONE"
+            ]
+        }
+    },
+    "Resources": {
+    
+        "ApplicantGroup": {
+          "Type" : "AWS::Cognito::UserPoolGroup",
+          "Properties" : {
+              "GroupName" : "Applicant",
+              "Precedence" : 1,
+              
+              "UserPoolId" : {
+                "Ref": "authgradadmissionshub12b661cc12b661ccUserPoolId"
+              }
+            }
+        },
+        
+    
+    
+    },
+    
+}

@@ -32,7 +32,7 @@ const errorLink = onError(({ graphqlErrors }) => {
 const dbLink = from([
   errorLink,
   new HttpLink({
-    uri: "https://j2ofh2owcb.execute-api.us-east-1.amazonaws.com/dev/graphql",
+    uri: "https://j2ofh2owcb.execute-api.us-east-1.amazonaws.com/main/graphql",
   }),
 ]);
 
@@ -46,12 +46,12 @@ const client = new ApolloClient({
 });
 
 ReactDOM.render(
-  <React.StrictMode>
-    <ApolloProvider client={client}>
-      <App />
-    </ApolloProvider>
-  </React.StrictMode>,
-  document.getElementById("root")
+    <React.StrictMode>
+      <ApolloProvider client={client}>
+        <App />
+      </ApolloProvider>
+    </React.StrictMode>,
+    document.getElementById("root")
 );
 
 // If you want to start measuring performance in your app, pass a function
