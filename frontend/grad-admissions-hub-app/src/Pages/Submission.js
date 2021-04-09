@@ -57,22 +57,36 @@ const orgApplications = [
 const Submission = () => {
     const { userState } = useContext(UserContext);
     // const [applications, setApplications] = useState(orgApplications);
-    const { loading, error, data } = useQuery(getUserApplicationsQuery(userState.id,userState.profile),{returnPartialData:true});
+    const { loading, error, data } = useQuery(getUserApplicationsQuery(userState.id,userState.profile));
+    const [applications, setApplications] = useState([]);
     
+    console.log(data)
+    useEffect(()=> {
+        // setApplications((userState.profile === "applicant") ? data && data.applicantById && data.applicantById.applications: data && data.professorById && data.professorById.applications);
+        if(userState.profile==="applicant"){
+            if(data){
+                if(data.applicantById){
+                    setApplications(data.applicantById.applications);
+                }
+            }
+        }else if(userState.profile==="professor"){
+            if(data){
+                if(data.professorById){
+                    setApplications(data.professorById.applications);
+                }
+            }
+        }
+    },[data]);
     if (loading) return 'Loading...';
     if (error) return `Error! ${error.message}`;
-    console.log(data)
-
-    const applications = (userState.profile === "applicant") ? data.applicantById.applications: data.professorById.applications;
-    
     return (
         <div className="center-container">
-            {userState.profile === 'applicant' && (<CreateApplication applicantId={userState.email}/>)}
+            {userState.profile === 'applicant' && (<CreateApplication applicantId={userState.id}/>)}
             {userState.loggedIn && (
                 <div className="applications">
                     <h1>Applications </h1>
                     <ul className="application-list">
-                        {applications.map((elem, idx) => (
+                        {applications && applications.map((elem, idx) => (
                             <li key={idx} className="application-preview">
                                 <Link className="application-link" to={`/application/${elem.id}`}>
                                     <span>
