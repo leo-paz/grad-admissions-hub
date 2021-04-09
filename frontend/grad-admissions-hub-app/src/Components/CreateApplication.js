@@ -152,26 +152,26 @@ const CreateApplication = ({applicantId}) => {
         //     console.log(files);
         // }
 
-        const MAX_IMAGE_SIZE = 1000000;
+        // const MAX_IMAGE_SIZE = 1000000;
 
-        let files = event.target.files || event.dataTransfer.files
-        if (!files.length) return
-        createFile(files[0]);
+        // let files = event.target.files || event.dataTransfer.files
+        // if (!files.length) return
+        // createFile(files[0]);
 
-        function createFile(file){
-            let reader = new FileReader();
-            reader.onload = (e) => {
-              console.log('length: ', e.target.result.includes('data:application/pdf'))
-              if (!e.target.result.includes('data:application/pdf')) {
-                return alert('Wrong file type - PDF only.');
-              }
-              if (e.target.result.length > MAX_IMAGE_SIZE) {
-                return alert('File is loo large.');
-              }
-              upload.file = e.target.result;
-            }
-            reader.readAsDataURL(file);
-        }
+        // function createFile(file){
+        //     let reader = new FileReader();
+        //     reader.onload = (e) => {
+        //       console.log('length: ', e.target.result.includes('data:application/pdf'))
+        //       if (!e.target.result.includes('data:application/pdf')) {
+        //         return alert('Wrong file type - PDF only.');
+        //       }
+        //       if (e.target.result.length > MAX_IMAGE_SIZE) {
+        //         return alert('File is loo large.');
+        //       }
+        //       upload.file = e.target.result;
+        //     }
+        //     reader.readAsDataURL(file);
+        // }
         
     }   
 
@@ -219,7 +219,7 @@ const CreateApplication = ({applicantId}) => {
                 "professor": "${selectedProf.id}",
                 "dateSubmitted": "${newDate}",
                 "areasOfResearch": [${state.areasOfInterest}],
-                "resumeDocumentId": "${`dafsdfasdf`}",
+                "resumeDocumentId": "${upload.uploadURL}",
                 "auditDocumentId": "${`dafsdfasdf`}",
                 "diplomaDocumentId": "${`dafsdfasdf`}",
                 "reviews": []
@@ -229,7 +229,7 @@ const CreateApplication = ({applicantId}) => {
         try {
             console.log("Successfully signed up!");
 
-            uploadFile();
+            //uploadFile();
 
             //modify requestBody before posting
             fetch("https://j2ofh2owcb.execute-api.us-east-1.amazonaws.com/main/graphql",
