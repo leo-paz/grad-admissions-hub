@@ -9,7 +9,24 @@ import Input from '../Components/Input/Input';
 import Checkbox from '../Components/Checkbox/Checkbox';
 
 import { UserContext } from '../App';
+import { useQuery, gql } from '@apollo/client';
 
+
+function getApplicantQuery(id){
+
+    const APPLICANT_QUERY = gql`
+    {
+        applicantById(id: "${id}") {
+            id
+            name
+            graduationDate
+            majors
+        }
+    }
+    `;
+
+    return APPLICANT_QUERY;
+}
 const majors = [
     'Engineering',
     'Arts',
@@ -29,17 +46,26 @@ function Applicant() {
     const { userState, setUserState } = useContext(UserContext);
     const [applicant, setApplicant] = useState(applicant1);
 
-    useEffect(() => {
-        async function getApplicantById() {
-            try {
-                // TODO: Call backend with apollo client here
-                // setApplicant(res)
-            } catch (e) {
-                console.log(e);
-            }
-        }
-        getApplicantById();
-    }, [])
+    const { loading, error, data } = useQuery(getApplicantQuery(userState.id));
+
+    if (loading) return 'Loading...';
+    if (error) return `Error! ${error.message}`;
+    console.log(data && data.applicantById.name);
+    console.log(data && data.applicantById.id);
+    console.log(data && data.applicantById.graduationDate);
+
+
+    // useEffect(() => {
+    //     async function getApplicantById() {
+    //         try {
+    //             // TODO: Call backend with apollo client here
+    //             // setApplicant(res)
+    //         } catch (e) {
+    //             console.log(e);
+    //         }
+    //     }
+    //     getApplicantById();
+    // }, [])
 
     const handleLogOut = async (event) => {
         console.log("logout is clicked!");
@@ -67,32 +93,28 @@ function Applicant() {
                 placeholder="Full name"
                 type="text"
                 label="name"
-                value={applicant.name}
+                value={data && data.applicantById.name}
                 readOnly={true}
             />
             <Input
                 placeholder="Email"
                 type="text"
                 label="email"
-                value={applicant.email}
+                value={data && data.applicantById.id}
                 readOnly={true}
             />
             <h2>Graduation Date</h2>
-            <input
-                type="Date"
-                name="graduationdate"
-                readOnly={true}
-                value={applicant.graduationDate}
-            />
+            <p style={{'color':'white'}}>{new Date(data && data.applicantById.graduationDate).toDateString()}</p>
             <h2>Majors</h2>
             <ul className="checkbox-list">
-                {majors.map((elem, idx) => (
+                {data && data.applicantById.majors.map((elem, idx) => (
                     <li key= {elem} className="checkbox-item">
                         <Checkbox
                             key={idx}
                             name={elem}
-                            disabled={true}
                             checked={true}
+                            readOnly = {true}
+                            // disabled={true}
                         />
                     </li>
                 ))}

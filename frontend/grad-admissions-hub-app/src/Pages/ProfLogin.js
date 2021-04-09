@@ -46,7 +46,7 @@ const ProfLogin = () => {
 
         const requestProf = `{
             "Professor": {
-                "id": "${state.email}"
+                "id": "${state.email}",
                 "name": "${state.name}",
                 "areasOfResearch": [${state.areasOfResearch}]
             }
@@ -61,19 +61,21 @@ const ProfLogin = () => {
                     profile: 'professor'
                     // other custom attributes 
                 }
-            })
-            if (user) {
-                const newState = { ...state, verifying: true }
-                setState(newState);
-                console.log(user);
-                console.log("Successfully signed up!");
-
-                fetch("https://j2ofh2owcb.execute-api.us-east-1.amazonaws.com/main/graphql",
-                    {
-                        method: 'POST',
-                        body: requestProf
-                    })
-            }
+            }).then((res) => {
+                if (res) {
+                    const newState = { ...state, verifying: true }
+                    setState(newState);
+                    console.log(res);
+                    console.log("Successfully signed up!");
+    
+                    fetch("https://j2ofh2owcb.execute-api.us-east-1.amazonaws.com/main/graphql",
+                        {
+                            method: 'POST',
+                            body: requestProf
+                        })
+                }
+            }    
+            );
         } catch (error) {
             console.log('error signing up:', error);
         }
