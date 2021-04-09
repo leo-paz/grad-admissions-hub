@@ -24,6 +24,7 @@ function Checkbox({ onCheckBoxChange, name, checked, disabled }) {
                 onChange={onCheckBoxChange}
                 type="checkbox"
                 id={name}
+                checked={checked}
                 name={name}
                 disabled={disabled}
                 //checked={!onCheckBoxChange && checked}
