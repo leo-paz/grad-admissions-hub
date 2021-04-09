@@ -30,7 +30,7 @@ const ApplicantSignup = () => {
 
     const requestBody = `{
       "Applicant": {
-          "id": "${email}"
+          "id": "${email}",
           "name": "${fullname}",
           "graduationDate": "${state.graduationDate}",
           "majors": [${state.majors}]

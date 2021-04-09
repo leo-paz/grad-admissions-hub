@@ -4,6 +4,7 @@ import Button from '../Components/Button/Button';
 import Input from '../Components/Input/Input';
 import Checkbox from '../Components/Checkbox/Checkbox';
 import ProfSelectBox from '../Components/ProfSelectBox/ProfSelectBox';
+import { useQuery, gql } from '@apollo/client';
 
 import lottie from 'lottie-web';
 
@@ -45,13 +46,34 @@ const orgSelectedProf = {
     id: ''
 }
 
+function getProfessorsQuery() {
+
+    const PROF_QUERY = gql`
+    {
+        professors {
+            id
+            name
+        }
+    }
+    `;
+
+    return PROF_QUERY;
+}
+
 const CreateApplication = ({applicantId}) => {
     const [selectedProf, setSelectedProf] = useState(orgSelectedProf);
     const [profs, setProfs] = useState(orgProfs);
+    const [state, setState] = useState({
+        Approved: "",
+        graduationDate: "",
+        areasOfInterest: []
+    })
 
     const uploadResume = useRef(null);
     const uploadAudit = useRef(null);
     const uploadTranscript = useRef(null);
+
+    const { loading, error, data } = useQuery(getProfessorsQuery());
 
     useEffect(() => {
         lottie.loadAnimation({
@@ -78,17 +100,12 @@ const CreateApplication = ({applicantId}) => {
             animationData: require('../animations/document-upload.json'),
             name: 'transcript'
         })
+    }, [data])
 
-        async function getProfessors() {
-            try {
-                //TODO: Make call to get professors
-                // setProfs(res);
-            } catch (error) {
+    if (loading) return (<h1>loading is true</h1>);
+    if (error) return (<h1> there is error</h1>);
 
-            }
-        }
-        getProfessors();
-    }, [])
+    console.log(data);
 
     const checkboxes = [
         'Machine Learning',
@@ -96,12 +113,6 @@ const CreateApplication = ({applicantId}) => {
         'Materials and Structures',
         'Biomechanics'
     ]
-
-    const [state, setState] = useState({
-        Approved: "",
-        graduationDate: "",
-        areasOfResearch: []
-    })
 
     const handleSelect = (prof) => {
         setSelectedProf(prof);
@@ -111,11 +122,11 @@ const CreateApplication = ({applicantId}) => {
         console.log(event.target.name);
         console.log(event.target.checked);
         if (event.target.checked) {
-            const newState = { ...state, majors: [...state.areasOfResearch, `"${event.target.name}"`] }
+            const newState = { ...state, areasOfInterest: [...state.areasOfInterest, `"${event.target.name}"`] }
             const newState2 = { ...newState, majors: Array.from(new Set(newState.majors)) };
             setState(newState2);
         } else {
-            const filtered = state.areasOfResearch.filter(function (value, index, arr) {
+            const filtered = state.areasOfInterest.filter(function (value, index, arr) {
                 return value != `"${event.target.name}"`;
             });
             const newState = { ...state, majors: filtered };
@@ -142,12 +153,13 @@ const CreateApplication = ({applicantId}) => {
 
         const requestBody = `{
             "Application": {
-                "applicant": ${applicantId},
+                "applicant": "${applicantId}",
                 "professor": "${selectedProf.id}",
                 "dateSubmitted": "${newDate}",
-                "areasOfResearch": "${`dafsdfasdf`}",
+                "areasOfResearch": [${state.areasOfInterest}],
                 "resumeDocumentId": "${`dafsdfasdf`}",
                 "auditDocumentId": "${`dafsdfasdf`}",
+                "diplomaDocumentId": "${`dafsdfasdf`}",
                 "reviews": []
             }
         }`
@@ -170,7 +182,7 @@ const CreateApplication = ({applicantId}) => {
             <h1>Create An Application</h1>
             <div className="select-box-container">
                 <ProfSelectBox
-                    professors={profs}
+                    professors={data.professors}
                     onSelect={handleSelect}
                     title={selectedProf.name}
                 />

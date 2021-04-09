@@ -107,7 +107,7 @@ const Navbar = () => {
                     onMouseEnter={() => lottie.play('settings')}
                     onMouseLeave={() => lottie.stop('settings')}
                 >
-                    <Link className="nav-link">
+                    <Link className="nav-link" to="/settings">
                         <div className="standard-nav-animation" ref={settingsContainer}/>
                         {/* <CogIcon /> */}
                         <span className="link-text">Settings</span>
