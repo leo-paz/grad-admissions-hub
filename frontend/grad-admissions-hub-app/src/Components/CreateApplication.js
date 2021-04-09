@@ -73,7 +73,7 @@ const CreateApplication = ({applicantId}) => {
     const uploadAudit = useRef(null);
     const uploadTranscript = useRef(null);
 
-    const { loading, error, data } = useQuery(getProfessorsQuery(), {returnPartialData:true});
+    const { loading, error, data } = useQuery(getProfessorsQuery());
 
     useEffect(() => {
         lottie.loadAnimation({
