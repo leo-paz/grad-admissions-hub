@@ -111,7 +111,7 @@ function Professor() {
                         <Checkbox
                             key={idx}
                             name={elem}
-                            disabled={true}
+                            readOnly={true}
                             checked={true}
                         />
                     </li>
