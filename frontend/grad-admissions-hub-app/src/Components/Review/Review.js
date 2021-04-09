@@ -9,7 +9,10 @@ import Star from './Star';
 function Review({ title, body, rating, date, id }) {
 
     const [ratings, setRatings] = useState(new Array(rating));
-
+    let arr = [];
+    for( let i=0;i<rating;i++){
+        arr.push(1);
+    }
     return (
         <Accordion
             title={title}
@@ -17,10 +20,10 @@ function Review({ title, body, rating, date, id }) {
         >
             <p>{body}</p>
             <h3>Date Submitted</h3>
-            <p>{date.toDateString()}</p>
+            <p>{date}</p>
             <h3>Rating</h3>
             <div className="stars-container">
-                {rating.map((elem, idx) => (
+                {arr && arr.map((elem, idx) => (
                     <Star id={id} key={idx} />
                 ))}
             </div>

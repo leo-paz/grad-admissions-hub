@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 
 import Review from '../Components/Review/Review';
 import CreateReview from '../Components/Review/CreateReview';
+import { useQuery, gql } from '@apollo/client';
 
 import { UserContext } from '../App';
 // id: ID
@@ -18,6 +19,40 @@ import { UserContext } from '../App';
 //   professor: Professor
 //   dateSubmitted: String
 // }
+
+
+function getApplicationQuery(id){
+
+    const REV_QUERY = gql`
+    {
+        applicationById(id: "${id}") {
+            applicant {
+                id
+                name
+            }
+            professor {
+                id
+                name
+            }
+            dateSubmitted
+            areasOfResearch
+            resumeDocumentId
+            diplomaDocumentId
+            auditDocumentId
+            reviews {
+                id
+                title
+                dateSubmitted
+                ranking
+                body
+            }
+        }
+    }
+
+    `;
+
+    return REV_QUERY;
+}
 
 const orgApplication = {
     id: 'xxx',
@@ -69,42 +104,38 @@ const orgReviews = [
 function Application(props) {
     const { userState } = useContext(UserContext);
     const [reviews, setReviews] = useState(orgReviews);
-    const [application, setApplication] = useState(orgApplication);
+    const [application, setApplication] = useState({});
 
     const { id } = useParams();
+    const { loading, error, data } = useQuery(getApplicationQuery(id), {returnPartialData:true, partialRefetch: true});
+    console.log(data);
 
     useEffect(() => {
-        async function getApplicationById() {
-            try {
-                // TODO: Call backend with apollo client here
-                // setApplicant(res)
-            } catch (e) {
-                console.log(e);
-            }
+        if(data){
+            setApplication(data.applicationById);
         }
-        getApplicationById();
-    });
-
+    },[data]);
+    
     return (
         <div className="center-container">
             <div className="application-info-card">
+                {console.log(application)}
                 <h1>Application</h1>
-
                 <h3>Applicant Name</h3>
-                <p>{application.applicant.name}</p>
+                <p>{application && application.applicant && application.applicant.name}</p>
                 <h3>Applicant Email</h3>
-                <p>{application.applicant.id}</p>
+                <p>{application && application.applicant && application.applicant.id}</p>
                 <h3>Professor Name</h3>
-                <p>{application.professor.name}</p>
+                <p>{application && application.professor && application.professor.name}</p>
                 <h3>Professor Email</h3>
-                <p>{application.professor.id}</p>
+                <p>{application && application.professor && application.professor.id}</p>
                 <h3>Date Submitted</h3>
-                <p>{application.dateSubmmited.toDateString()}</p>
+                <p>{ application && application.dateSubmitted && application.dateSubmitted}</p>
                 <h3>Areas Of Interest</h3>
-                <p>{application.areasOfResearch.join(", ")}</p>
+                <p>{application && application.areasOfResearch && application.areasOfResearch.join(", ")}</p>
 
                 <h2>Reviews</h2>
-                {reviews.map((elem, idx) => (
+                {application && application.reviews && application.reviews.map((elem, idx) => (
                     <Review
                         title={elem.title}
                         id={idx}

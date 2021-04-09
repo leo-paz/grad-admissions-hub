@@ -4,7 +4,7 @@ import Button from '../Button/Button';
 import Input from '../Input/Input';
 import Rating from '../Rating/Rating';
 
-const CreateReview = ({ professorId, applicantId }) => {
+const CreateReview = ({ professorId, applicationId }) => {
     const [title, setTitle] = useState('');
     const [body, setBody] = useState('');
     const [ranking, setRanking] = useState(1);
@@ -35,7 +35,7 @@ const CreateReview = ({ professorId, applicantId }) => {
                 "body": "${body}",
                 "professor": "${professorId}",
                 "dateSubmitted": "${newDate}",
-                "application": "${applicantId}"
+                "application": "${applicationId}"
             }
         }`
 

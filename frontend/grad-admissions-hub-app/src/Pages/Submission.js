@@ -81,7 +81,7 @@ const Submission = () => {
     if (error) return `Error! ${error.message}`;
     return (
         <div className="center-container">
-            {userState.profile === 'applicant' && (<CreateApplication applicantId={userState.email}/>)}
+            {userState.profile === 'applicant' && (<CreateApplication applicantId={userState.id}/>)}
             {userState.loggedIn && (
                 <div className="applications">
                     <h1>Applications </h1>
