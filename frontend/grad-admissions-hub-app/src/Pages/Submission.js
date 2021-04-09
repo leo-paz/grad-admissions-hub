@@ -86,6 +86,7 @@ const Submission = () => {
                 <div className="applications">
                     <h1>Applications </h1>
                     <ul className="application-list">
+                        {applications && applications.length===0 && (<h1>You currently do not have any applications</h1>)}
                         {applications && applications.map((elem, idx) => (
                             <li key={idx} className="application-preview">
                                 <Link className="application-link" to={`/application/${elem.id}`}>
