@@ -5,6 +5,35 @@ import { Link } from 'react-router-dom';
 import Button from '../Components/Button/Button';
 
 import { UserContext } from '../App';
+import { useQuery, gql } from '@apollo/client';
+
+function getUserApplicationsQuery(id, profile) {
+    if (profile === 'professor') {
+        const PROF_QUERY = gql`
+            {
+                professorById(id: "${id}") {
+                    applications {
+                        id
+                        areasOfResearch
+                    }
+                }
+            }`
+        ;
+        return PROF_QUERY;
+    }
+
+    const APPLICANT_QUERY = gql`
+        {
+            applicantById(id: "${id}") {
+                applications {
+                    id
+                    areasOfResearch
+                }
+            }
+        }`
+    ;
+    return APPLICANT_QUERY;
+}
 
 const orgApplications = [
     {
@@ -27,21 +56,15 @@ const orgApplications = [
 
 const Submission = () => {
     const { userState } = useContext(UserContext);
-    const [applications, setApplications] = useState(orgApplications);
+    // const [applications, setApplications] = useState(orgApplications);
+    const { loading, error, data } = useQuery(getUserApplicationsQuery(userState.id,userState.profile),{returnPartialData:true});
+    
+    if (loading) return 'Loading...';
+    if (error) return `Error! ${error.message}`;
+    console.log(data)
 
-    useEffect(() => {
-        async function getApplicationsForUser() {
-            try {
-                // Get current 
-                // TODO: Call backend with apollo client here
-                // setApplications(res)
-            } catch (e) {
-                console.log(e);
-            }
-        }
-        getApplicationsForUser();
-    });
-
+    const applications = (userState.profile === "applicant") ? data.applicantById.applications: data.professorById.applications;
+    
     return (
         <div className="center-container">
             {userState.profile === 'applicant' && (<CreateApplication applicantId={userState.email}/>)}
