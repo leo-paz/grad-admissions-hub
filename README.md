@@ -22,6 +22,7 @@ A system made for keeping track of graduate admissions for both professors and a
 5. Remove and mix match any fields from the query above and see GraphQL only return the specified fields!
 
 
+
 ![alt_text](https://github.com/leo-paz/grad-admissions-hub/blob/main/gradadmissionsdiagrams.png?raw=true)
 ![alt_text](https://github.com/leo-paz/grad-admissions-hub/blob/main/gradadmissionsschema .png?raw=true)
 
