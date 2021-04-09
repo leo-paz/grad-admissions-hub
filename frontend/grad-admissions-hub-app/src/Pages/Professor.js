@@ -45,11 +45,13 @@ const checkboxes = [
 function Professor() {
     const { userState, setUserState } = useContext(UserContext);
     const [professor, setProfessor] = useState(professor1);
-    const { loading, error, data } = useQuery(getProfessorQuery("9cc14e72-eca7-4528-b2b8-1ab6f16ce02a"));
+    console.log("HEEERREE");
+    console.log(userState.id);
+    const { loading, error, data } = useQuery(getProfessorQuery(userState.id));
 
     if (loading) return 'Loading...';
     if (error) return `Error! ${error.message}`;
-    console.log(data.professorById.name);
+    console.log(data && data.professorById.name);
 
     /*
     useEffect(() => {
@@ -90,7 +92,7 @@ function Professor() {
                 placeholder="Full name"
                 type="text"
                 label="name"
-                value={data.professorById.name}
+                value={ data && data.professorById.name}
                 //value={data.professorById.name}
                 readOnly={true}
             />
@@ -99,7 +101,7 @@ function Professor() {
                 type="text"
                 label="email"
 
-                value={id}
+                value={userState.id}
                 readOnly={true}
             />
             <h2>Areas of Research</h2>
