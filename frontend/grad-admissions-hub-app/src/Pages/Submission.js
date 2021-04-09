@@ -35,40 +35,6 @@ function getUserApplicationsQuery(id, profile) {
     return APPLICANT_QUERY;
 }
 
-
-
-// function getApplicationQuery(id){
-
-//     const REV_QUERY = gql`
-//     {
-//         applicationById(id: "b0071922-6184-480a-a5db-a0897ed85ae3") {
-//             applicant {
-//                 id
-//                 name
-//             }
-//             professor {
-//                 id
-//                 name
-//             }
-//             dateSubmitted
-//             areasOfResearch
-//             resumeDocumentId
-//             diplomaDocumentId
-//             auditDocumentId
-//             reviews {
-//                 id
-//                 title
-//                 dateSubmitted
-//                 ranking
-//                 body
-//             }
-//         }
-//     }
-
-//     `;
-
-//     return REV_QUERY;
-// }
 const orgApplications = [
     {
         areasOfResearch: ['Biology', 'Neuroscience', 'Quiditch'],
@@ -96,21 +62,7 @@ const Submission = () => {
     if (loading) return 'Loading...';
     if (error) return `Error! ${error.message}`;
     console.log(data)
-    // if (loading) return 'Loading...';
-    // if (error) return `Error! ${error.message}`;
-    // console.log(data && data.applicationById.reviews);
-    // useEffect(() => {
-    //     async function getApplicationsForUser() {
-    //         try {
-    //             // Get current 
-    //             // TODO: Call backend with apollo client here
-    //             // setApplications(res)
-    //         } catch (e) {
-    //             console.log(e);
-    //         }
-    //     }
-    //     getApplicationsForUser();
-    // });
+
     const applications = (userState.profile === "applicant") ? data.applicantById.applications: data.professorById.applications;
     
     return (
