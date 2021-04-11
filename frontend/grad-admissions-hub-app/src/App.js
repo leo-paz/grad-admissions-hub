@@ -12,6 +12,7 @@ import Applicant from './Pages/Applicant';
 import Profile from './Pages/Profile';
 import Navbar from "./Components/Navbar/Navbar";
 import Application from './Pages/Application';
+import Settings from './Pages/Settings';
 
 import Amplify, { Auth } from 'aws-amplify';
 import awsconfig from './aws-exports';
@@ -62,6 +63,7 @@ function App() {
             <Route path="/applicantSignup" component={ApplicantSignup} />
             <Route path="/submission" component={Submission} />
             <Route path="/profile" component={Profile} />
+            <Route path="/settings" component={Settings} />
             <Route path="/application/:id" component={Application} />
             {/* <Route path="/professor" component={Professor} />
           <Route path="/applicant" component={Applicant} /> */}
