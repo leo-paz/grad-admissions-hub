@@ -5,11 +5,6 @@ import { LOAD_APPLICATION } from "../GraphQL/Queries";
 
 const GetApplication = () => {
   const { data } =  useQuery(LOAD_APPLICATION,{returnPartialData:true});
-    useEffect(() => {
-    if (data) {
-      console.log(data);
-    }
-  }, [data]);
 
   return (
     <div>

@@ -50,25 +50,8 @@ function Applicant() {
 
     if (loading) return 'Loading...';
     if (error) return `Error! ${error.message}`;
-    console.log(data && data.applicantById.name);
-    console.log(data && data.applicantById.id);
-    console.log(data && data.applicantById.graduationDate);
-
-
-    // useEffect(() => {
-    //     async function getApplicantById() {
-    //         try {
-    //             // TODO: Call backend with apollo client here
-    //             // setApplicant(res)
-    //         } catch (e) {
-    //             console.log(e);
-    //         }
-    //     }
-    //     getApplicantById();
-    // }, [])
 
     const handleLogOut = async (event) => {
-        console.log("logout is clicked!");
         try {
           await Auth.signOut()
             .then((res) => {

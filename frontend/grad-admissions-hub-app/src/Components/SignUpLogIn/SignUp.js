@@ -40,7 +40,6 @@ function SignUp() {
     }, [login])
 
     const handleLogInButton = async (event) => {
-        console.log("login is clicked!");
         try {
           await Auth.signIn(email, password)
             .then((res) => {

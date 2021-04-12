@@ -34,7 +34,6 @@ function App() {
     async function getAuth() {
       try {
         await Auth.currentSession().then((res) => {
-          console.log(res);
           const payload = res.idToken.payload;
 
           const newUser = {
