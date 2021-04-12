@@ -40,13 +40,12 @@ const CreateReview = ({ professorId, applicationId }) => {
         }`
 
         try {
-            console.log("Successfully signed up!");
 
             fetch("https://j2ofh2owcb.execute-api.us-east-1.amazonaws.com/main/graphql",
                 {
                     method: 'POST',
                     body: requestBody 
-                }).then(res => console.log(res))
+                })
         } catch (error) {
             console.log('error signing up:', error);
         }

@@ -9,7 +9,7 @@ const Home = () => {
     lottie.loadAnimation({
       container: confettiContainer.current,
       renderer: 'svg',
-      loop: false,
+      loop: 2,
       autoplay: true,
       animationData: require('../animations/confetti.json'),
       name: 'confetti'

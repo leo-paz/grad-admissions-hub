@@ -65,8 +65,6 @@ const ProfLogin = () => {
                 if (res) {
                     const newState = { ...state, verifying: true }
                     setState(newState);
-                    console.log(res);
-                    console.log("Successfully signed up!");
     
                     fetch("https://j2ofh2owcb.execute-api.us-east-1.amazonaws.com/main/graphql",
                         {
@@ -87,8 +85,6 @@ const ProfLogin = () => {
             if (data) {
                 const newState = { ...state, verifying: false }
                 setState(newState);
-                console.log(data);
-                console.log("Successfully verified");
             }
         } catch (error) {
             console.log('error signing up:', error);
@@ -101,8 +97,6 @@ const ProfLogin = () => {
     }
 
     const onCheckBoxChange = (event) => {
-        console.log(event.target.name);
-        console.log(event.target.checked);
         if (event.target.checked) {
             const newState = { ...state, areasOfResearch: [...state.areasOfResearch, `"${event.target.name}"`] }
             const newState2 = { ...newState, areasOfResearch: Array.from(new Set(newState.areasOfResearch)) };
@@ -113,7 +107,6 @@ const ProfLogin = () => {
             });
             const newState = { ...state, areasOfResearch: filtered };
             setState(newState);
-            console.log(filtered);
         }
     }
 

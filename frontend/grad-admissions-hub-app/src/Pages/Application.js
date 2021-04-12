@@ -108,7 +108,6 @@ function Application(props) {
 
     const { id } = useParams();
     const { loading, error, data } = useQuery(getApplicationQuery(id), {returnPartialData:true, partialRefetch: true});
-    console.log(data);
 
     useEffect(() => {
         if(data){
@@ -119,7 +118,6 @@ function Application(props) {
     return (
         <div className="center-container">
             <div className="application-info-card">
-                {console.log(application)}
                 <h1>Application</h1>
                 <h3>Applicant Name</h3>
                 <p>{application && application.applicant && application.applicant.name}</p>
@@ -130,9 +128,11 @@ function Application(props) {
                 <h3>Professor Email</h3>
                 <p>{application && application.professor && application.professor.id}</p>
                 <h3>Date Submitted</h3>
-                <p>{ application && application.dateSubmitted && application.dateSubmitted}</p>
+                <p>{application && application.dateSubmitted}</p>
                 <h3>Areas Of Interest</h3>
                 <p>{application && application.areasOfResearch && application.areasOfResearch.join(", ")}</p>
+                <h3>Resume</h3>
+                <a href={application && application.resumeDocumentId}>{application && application.resumeDocumentId}</a>
 
                 <h2>Reviews</h2>
                 {application && application.reviews && application.reviews.map((elem, idx) => (
