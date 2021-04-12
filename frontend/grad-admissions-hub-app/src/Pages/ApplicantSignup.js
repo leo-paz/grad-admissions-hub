@@ -48,8 +48,6 @@ const ApplicantSignup = () => {
         }
       });
       if (user) {
-        console.log(user);
-        console.log("Successfully signed up!");
         setVerifying(true);
 
         fetch("https://j2ofh2owcb.execute-api.us-east-1.amazonaws.com/main/graphql",
@@ -78,7 +76,6 @@ const ApplicantSignup = () => {
   }
 
   const onDateChangeHandler = (event) => {
-    console.log(event.target.value);
     const date = new Date(event.target.value);
     const newDate = "" + (parseInt(date.getDate()) + 1) + "/" + (parseInt(date.getMonth()) + 1) + "/" + date.getFullYear();
     const newState = { ...state, graduationDate: newDate };
@@ -96,7 +93,6 @@ const ApplicantSignup = () => {
       });
       const newState = { ...state, majors: filtered };
       setState(newState);
-      console.log(filtered);
     }
   }
 
@@ -105,7 +101,6 @@ const ApplicantSignup = () => {
       const data = await Auth.confirmSignUp(email, code)
       if (data) {
         setVerifying(false)
-        console.log(data);
         console.log("Successfully verified");
       }
     } catch (error) {

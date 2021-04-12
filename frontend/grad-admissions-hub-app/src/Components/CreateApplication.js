@@ -61,7 +61,7 @@ function getProfessorsQuery() {
     return PROF_QUERY;
 }
 
-const CreateApplication = ({applicantId}) => {
+const CreateApplication = ({ applicantId }) => {
     const [selectedProf, setSelectedProf] = useState(orgSelectedProf);
     const [profs, setProfs] = useState(orgProfs);
     const [state, setState] = useState({
@@ -72,15 +72,14 @@ const CreateApplication = ({applicantId}) => {
 
     const [upload, setUpload] = useState({
         file: '',
-        resume:'',
-        audit:'',
-        transcript:'',
-        uploadURL: ''
+        resume: '',
+        audit: '',
+        transcript: '',
+        uploadURL: '',
+        viewUrl: ''
     })
 
     const uploadResume = useRef(null);
-    const uploadAudit = useRef(null);
-    const uploadTranscript = useRef(null);
 
     const { loading, error, data } = useQuery(getProfessorsQuery());
 
@@ -93,28 +92,25 @@ const CreateApplication = ({applicantId}) => {
             animationData: require('../animations/document-upload.json'),
             name: 'resume'
         })
-        lottie.loadAnimation({
-            container: uploadAudit.current,
-            renderer: 'svg',
-            loop: false,
-            autoplay: false,
-            animationData: require('../animations/document-upload.json'),
-            name: 'audit'
-        })
-        lottie.loadAnimation({
-            container: uploadTranscript.current,
-            renderer: 'svg',
-            loop: false,
-            autoplay: false,
-            animationData: require('../animations/document-upload.json'),
-            name: 'transcript'
-        })
     }, [data])
+
+    useEffect(() => {
+        async function getUrl() {
+            const API_ENDPOINT = 'https://0gyyyi01kf.execute-api.us-east-1.amazonaws.com/uploads';
+            const response = axios({
+                method: 'GET',
+                url: API_ENDPOINT
+            }).then((res) => {
+                const uploadString = res.data.uploadURL;
+                const viewString = res.data.uploadURL.split('?')[0]
+                setUpload({ ...upload, uploadURL: uploadString, viewUrl: viewString });
+            })
+        }
+        if (!upload.uploadURL) getUrl();
+    }, [data, upload])
 
     if (loading) return (<h1>loading is true</h1>);
     if (error) return (<h1> there is error</h1>);
-
-    console.log(data);
 
     const checkboxes = [
         'Machine Learning',
@@ -128,8 +124,6 @@ const CreateApplication = ({applicantId}) => {
     }
 
     const onCheckBoxChange = (event) => {
-        console.log(event.target.name);
-        console.log(event.target.checked);
         if (event.target.checked) {
             const newState = { ...state, areasOfInterest: [...state.areasOfInterest, `"${event.target.name}"`] }
             const newState2 = { ...newState, majors: Array.from(new Set(newState.majors)) };
@@ -140,72 +134,31 @@ const CreateApplication = ({applicantId}) => {
             });
             const newState = { ...state, majors: filtered };
             setState(newState);
-            console.log(filtered);
         }
     }
 
-    const uploadButtonHandler = (event, document) => {
-        //THIS HANDLER DEALS WITH THE UPLOADED FILES.
-        //Currently it adds onto the already selected files object
-        // if (event.target && event.target.files) {
-        //     files = [...files, event.target.files];
-        //     console.log(files);
-        // }
-
-        // const MAX_IMAGE_SIZE = 1000000;
-
-        // let files = event.target.files || event.dataTransfer.files
-        // if (!files.length) return
-        // createFile(files[0]);
-
-        // function createFile(file){
-        //     let reader = new FileReader();
-        //     reader.onload = (e) => {
-        //       console.log('length: ', e.target.result.includes('data:application/pdf'))
-        //       if (!e.target.result.includes('data:application/pdf')) {
-        //         return alert('Wrong file type - PDF only.');
-        //       }
-        //       if (e.target.result.length > MAX_IMAGE_SIZE) {
-        //         return alert('File is loo large.');
-        //       }
-        //       upload.file = e.target.result;
-        //     }
-        //     reader.readAsDataURL(file);
-        // }
+    const uploadButtonHandler = e => {
         
-    }   
+        const MAX_IMAGE_SIZE = 1000000;
 
-    const uploadFile = async (event) =>{
-        const API_ENDPOINT = 'https://0gyyyi01kf.execute-api.us-east-1.amazonaws.com/uploads'
-        console.log('Upload clicked');
-            // Get the presigned URL
-            const response = await axios({
-              method: 'GET',
-              url: API_ENDPOINT
-            })
-            console.log('Response: ', response);
+        let files = e.target.files || e.dataTransfer.files
+        if (!files.length) return
+        createFile(files[0]);
 
-            async function createBlobData (file){
-                console.log('Uploading: ', file);
-                let binary = atob(file.split(',')[1]);
-                let array = [];
-                for (var i = 0; i < binary.length; i++) {
-                array.push(binary.charCodeAt(i));
+        function createFile(file) {
+            let reader = new FileReader();
+            reader.onload = (e) => {
+                
+                if (!e.target.result.includes('data:application/pdf')) {
+                    return alert('Wrong file type - PDF only.');
                 }
-                let blobData = new Blob([new Uint8Array(array)], {type: 'application/pdf'});
-                console.log('Uploading to: ', response.uploadURL);
-
-                const result = await fetch(response.uploadURL, {
-                    method: 'PUT',
-                    body: blobData
-                })
-                console.log('Result: ', result);                
-            }          
-
-            createBlobData(upload.file);
-
-            // Final URL for the user doesn't need the query string params
-            upload.uploadURL = response.uploadURL.split('?')[0];
+                if (e.target.result.length > MAX_IMAGE_SIZE) {
+                    return alert('File is loo large.');
+                }
+                setUpload({ ...upload, file: e.target.result });
+            }
+            reader.readAsDataURL(file);
+        }
     }
 
     const handleApply = async (event) => {
@@ -213,13 +166,31 @@ const CreateApplication = ({applicantId}) => {
         const date = new Date();
         const newDate = "" + (parseInt(date.getDate()) + 1) + "/" + (parseInt(date.getMonth()) + 1) + "/" + date.getFullYear();
 
+        async function createBlobData(file) {
+            console.log('Uploading: ', file);
+            let binary = atob(file.split(',')[1]);
+            let array = [];
+            for (var i = 0; i < binary.length; i++) {
+                array.push(binary.charCodeAt(i));
+            }
+            let blobData = new Blob([new Uint8Array(array)], { type: 'application/pdf' });
+            console.log('Uploading to: ', upload.uploadURL);
+
+            const result = await fetch(upload.uploadURL, {
+                method: 'PUT',
+                body: blobData
+            })
+        }
+        
+        await createBlobData(upload.file);
+
         const requestBody = `{
             "Application": {
                 "applicant": "${applicantId}",
                 "professor": "${selectedProf.id}",
                 "dateSubmitted": "${newDate}",
                 "areasOfResearch": [${state.areasOfInterest}],
-                "resumeDocumentId": "${upload.uploadURL}",
+                "resumeDocumentId": "${upload.viewUrl}",
                 "auditDocumentId": "${`dafsdfasdf`}",
                 "diplomaDocumentId": "${`dafsdfasdf`}",
                 "reviews": []
@@ -227,19 +198,11 @@ const CreateApplication = ({applicantId}) => {
         }`
 
         try {
-            console.log("Successfully signed up!");
-
-            //uploadFile();
-
-            //modify requestBody before posting
-            fetch("https://j2ofh2owcb.execute-api.us-east-1.amazonaws.com/main/graphql",
+            return fetch("https://j2ofh2owcb.execute-api.us-east-1.amazonaws.com/main/graphql",
                 {
                     method: 'POST',
-                    body: requestBody 
-                }).then(res => console.log(res))
-            
-
-            
+                    body: requestBody
+                })
         } catch (error) {
             console.log('error signing up:', error);
         }
@@ -267,7 +230,7 @@ const CreateApplication = ({applicantId}) => {
                     </li>
                 ))}
             </ul>
-            <h2>Upload Documents </h2>
+            <h2>Upload Resume</h2>
             <div className="upload-container">
                 <div className="upload-button-container">
                     <label
@@ -280,37 +243,7 @@ const CreateApplication = ({applicantId}) => {
                     </label>
                     <input
                         id="resume"
-                        onChange={(e) => uploadButtonHandler(e, "resume")}
-                        type="file"
-                    />
-                </div>
-                <div className="upload-button-container">
-                    <label
-                        onMouseEnter={() => lottie.play('audit')}
-                        onMouseLeave={() => lottie.stop('audit')}
-                        htmlFor="audit"
-                    >
-                        <p>Audit</p>
-                        <div className="upload-document-animation" ref={uploadAudit} />
-                    </label>
-                    <input
-                        id="audit"
-                        onChange={(e) => uploadButtonHandler(e, "audit")}
-                        type="file"
-                    />
-                </div>
-                <div className="upload-button-container">
-                    <label
-                        onMouseEnter={() => lottie.play('transcript')}
-                        onMouseLeave={() => lottie.stop('transcript')}
-                        htmlFor="transcript"
-                    >
-                        <p>Transcript</p>
-                        <div className="upload-document-animation" ref={uploadTranscript} />
-                    </label>
-                    <input
-                        id="transcript"
-                        onChange={(e) => uploadButtonHandler(e, "transcript")}
+                        onChange={uploadButtonHandler}
                         type="file"
                     />
                 </div>

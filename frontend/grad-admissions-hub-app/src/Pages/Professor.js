@@ -45,34 +45,15 @@ const checkboxes = [
 function Professor() {
     const { userState, setUserState } = useContext(UserContext);
     const [professor, setProfessor] = useState(professor1);
-    console.log("HEEERREE");
-    console.log(userState.id);
     const { loading, error, data } = useQuery(getProfessorQuery(userState.id));
 
     if (loading) return 'Loading...';
     if (error) return `Error! ${error.message}`;
-    console.log(data && data.professorById.name);
-
-    /*
-    useEffect(() => {
-        async function getProfessorById() {
-            try {
-                // TODO: Call backend with apollo client here
-                // setProfessor(res)
-            } catch (e) {
-                console.log(e);
-            }
-        }
-        getProfessorById();
-    }, [])
-    */
 
     const handleLogOut = async (event) => {
-        console.log("logout is clicked!");
         try {
           await Auth.signOut()
             .then((res) => {
-                console.log("sign out successful", res);
                 const newUser = {
                     loggedIn: false,
                     profile: '',

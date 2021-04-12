@@ -59,8 +59,7 @@ const Submission = () => {
     // const [applications, setApplications] = useState(orgApplications);
     const { loading, error, data } = useQuery(getUserApplicationsQuery(userState.id,userState.profile));
     const [applications, setApplications] = useState([]);
-    
-    console.log(data)
+
     useEffect(()=> {
         // setApplications((userState.profile === "applicant") ? data && data.applicantById && data.applicantById.applications: data && data.professorById && data.professorById.applications);
         if(userState.profile==="applicant"){
